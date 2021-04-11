@@ -3,6 +3,31 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
+    <StartupObject>resticterm.Program</StartupObject>
+    <ApplicationIcon>restictermico.ico</ApplicationIcon>
+    <Version>0.0.2</Version>
+    <Authors>Philippe GRAILLE</Authors>
+    <Company />
+    <Description>multi-platform UI for restic backup software.
+(https://restic.net/)</Description>
+    <PackageProjectUrl>https://github.com/GPh83/resticterm</PackageProjectUrl>
+    <PackageIcon>restictermico.png</PackageIcon>
+    <PackageTags>restic ui backup</PackageTags>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Terminal.Gui" Version="1.0.0-beta.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Restic\restic.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Img\restictermico.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>

@@ -1,0 +1,55 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terminal.Gui;
+
+namespace resticterm.Libs
+{
+
+    /// <summary>
+    /// Helper for design view
+    /// </summary>
+    public static class ViewDesign
+    {
+        /// <summary>
+        /// Design a field with label and text on same ligne
+        /// </summary>
+        /// <param name="ntop">View</param>
+        /// <param name="textField">Object to retrieve value</param>
+        /// <param name="caption">Label of field</param>
+        /// <param name="text">Initial value</param>
+        /// <param name="y">Line</param>
+        public static void SetField(Toplevel ntop, TextField textField, String caption, String text, int y)
+        {
+            
+            var f = new Label(caption) { X = 1, Y = y, TextAlignment = TextAlignment.Right };
+            ntop.Add(f);
+  
+            var t = new TextField(text) { X = Pos.Right(f)+1, Y = y, Width = Dim.Fill() -1};
+            ntop.Add(t);
+
+        }
+
+        /// <summary>
+        /// Design a field with label and text on same ligne
+        /// </summary>
+        /// <param name="ntop">View</param>
+        /// <param name="textField">Object to retrieve value</param>
+        /// <param name="caption">Label of field</param>
+        /// <param name="text">Initial value</param>
+        /// <param name="xCol">X pos for column</param>
+        /// <param name="y">Line</param>
+        public static void SetField(Toplevel ntop,ref TextField textField, String caption, String text, int xCol , int y)
+        {
+
+            var f = new Label(caption) { X = 1, Y = y, TextAlignment = TextAlignment.Right , Width = xCol};
+            ntop.Add(f);
+
+            textField = new TextField(text) { X = xCol + +2, Y = y, Width = Dim.Fill() - 1 };
+            ntop.Add(textField);
+
+        }
+    }
+}

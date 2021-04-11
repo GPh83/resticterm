@@ -5,7 +5,10 @@
     - Create repo
         - Local
         - SSH
-
+    - Do backup 
+      - Folders
+      - DB (mssql, mysql)
+      - 
 - Restore
     - All files in snapshot
     - Selected file in repos
