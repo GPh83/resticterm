@@ -15,17 +15,16 @@ namespace resticterm.Models
         [JsonInclude]
         public String EncryptedRepoPassword { get; set; } = String.Empty;
 
+        internal String MasterPassword { get; set; } = String.Empty;
 
         internal String GetRepoPassword()
         {
-            // TODO : Replace fixed password by MasterPassword
-            return Libs.Cryptography.Decrypt(EncryptedRepoPassword,"1234");
+            return Libs.Cryptography.Decrypt(EncryptedRepoPassword, MasterPassword);
         }
 
         internal void SetRepoPassword(String uncryptedPassword)
         {
-            // TODO : Replace fixed password by MasterPassword
-            EncryptedRepoPassword= Libs.Cryptography.Encrypt(uncryptedPassword, "1234");
+            EncryptedRepoPassword= Libs.Cryptography.Encrypt(uncryptedPassword, MasterPassword);
         }
 
     }

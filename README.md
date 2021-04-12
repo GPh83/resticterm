@@ -1,7 +1,7 @@
 # resticterm
 
-resticterm is a multi-platform UI for restic backup software. (https://restic.net/)
-It's a terminal user interface, strange for Windows but usefull through SSH under Linux for exemple.
+resticterm is a multi-platform UI for restic backup software. (https://restic.net/)  
+It's a terminal user interface, strange for Windows but useful through SSH under Linux for exemple.
 
 # Usage
 

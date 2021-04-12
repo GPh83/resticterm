@@ -26,6 +26,7 @@ namespace resticterm.Views
             };
             Application.Top.Add(win);
 
+            // Information
             var info = new TextView()
             {
                 X = 0,
@@ -45,8 +46,7 @@ namespace resticterm.Views
                 new StatusItem(Key.F10, "~F10~ Quit", () => { Application.RequestStop(); })
             });
             Application.Top.Add(statusBar);
-
-         
+                     
         }
 
         void ShowSetup()

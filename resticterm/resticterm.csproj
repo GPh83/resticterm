@@ -14,6 +14,10 @@
     <PackageIcon>restictermico.png</PackageIcon>
     <PackageTags>restic ui backup</PackageTags>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <RepositoryUrl>https://github.com/GPh83/resticterm</RepositoryUrl>
+    <Copyright />
+    <PackageReleaseNotes>Alpha version
+</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

@@ -24,7 +24,7 @@ namespace resticterm.Restic
             {
                 psi.FileName = Path.Combine(psi.WorkingDirectory, "restic");
             }
-            psi.EnvironmentVariables.Add("RESTIC_PASSWORD", Libs.Cryptography.Decrypt(encryptedPassword, "1234"));
+            psi.EnvironmentVariables.Add("RESTIC_PASSWORD", Libs.Cryptography.Decrypt(encryptedPassword, Program.dataManager.config.MasterPassword));
             psi.RedirectStandardOutput = true;
             psi.UseShellExecute = false;
             psi.Arguments = command + " " + param;

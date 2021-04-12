@@ -9,9 +9,15 @@ namespace resticterm
     /// </summary>
     internal class Program
     {
+        #region "Common services"
+
         static internal Models.DataManager dataManager;
         static internal Restic.Restic restic;
 
+        #endregion
+
+
+        // Entry point
         static void Main(string[] args)
         {
             Application.Init();
@@ -23,10 +29,14 @@ namespace resticterm
             // Initialize repo manager
             restic = new Restic.Restic(dataManager.config.RepoPath, dataManager.config.EncryptedRepoPassword);
 
+            // TODO : Master password 
+            dataManager.config.MasterPassword = "1234";
+            
             // Start UI
             var main = new Views.UI_Main();
             main.Create();
             Application.Run();
+
 
         }
     }
