@@ -41,15 +41,37 @@ namespace resticterm.Libs
         /// <param name="text">Initial value</param>
         /// <param name="xCol">X pos for column</param>
         /// <param name="y">Line</param>
-        public static void SetField(Toplevel ntop,ref TextField textField, String caption, String text, int xCol , int y)
+        public static void SetField(Toplevel ntop, ref TextField textField, String caption, String text, int xCol, int y)
         {
 
-            var f = new Label(caption) { X = 1, Y = y, TextAlignment = TextAlignment.Right , Width = xCol};
+            var f = new Label(caption) { X = 1, Y = y, TextAlignment = TextAlignment.Right, Width = xCol };
             ntop.Add(f);
 
-            textField = new TextField(text) { X = xCol + +2, Y = y, Width = Dim.Fill() - 1 };
+            textField = new TextField(text) { X = xCol + +2, Y = y, Width = Dim.Fill() - 1  };
             ntop.Add(textField);
 
         }
+
+        /// <summary>
+        /// Design a field with label and text on same ligne
+        /// </summary>
+        /// <param name="ntop">View</param>
+        /// <param name="textField">Object to retrieve value</param>
+        /// <param name="caption">Label of field</param>
+        /// <param name="text">Initial value</param>
+        /// <param name="xCol">X pos for column</param>
+        /// <param name="y">Line</param>
+        public static void SetField(Toplevel ntop, ref TextView textField, String caption, String text, int xCol, int y, int height)
+        {
+
+            var f = new Label(caption) { X = 1, Y = y, TextAlignment = TextAlignment.Right, Width = xCol };
+            ntop.Add(f);
+
+            textField = new TextView() { X = xCol + +2, Y = y, Width = Dim.Fill() - 1 , Text = text, Height = height , ColorScheme = Colors.Dialog };
+            ntop.Add(textField);
+
+        }
+
+
     }
 }

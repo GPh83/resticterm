@@ -11,7 +11,9 @@ namespace resticterm.Views
     {
         TextField _repoPath;
         TextField _repoPassword;
-      
+        TextField _restorePath;
+        TextView _sourcePath;
+
         public void Create()
         {
             var ntop = new Toplevel();
@@ -35,6 +37,9 @@ namespace resticterm.Views
 
             Libs.ViewDesign.SetField(ntop,ref _repoPath, "Path to repository", Program.dataManager.config.RepoPath ,30,3);
             Libs.ViewDesign.SetField(ntop,ref _repoPassword, "Repository password", Program.dataManager.config.GetRepoPassword(), 30, 4);
+            Libs.ViewDesign.SetField(ntop, ref _restorePath, "Restore path", Program.dataManager.config.RestorePath, 30, 6);
+            Libs.ViewDesign.SetField(ntop, ref _sourcePath, "Backup Paths", Program.dataManager.config.SourcesBackupPath, 30, 7,8);
+            //_sourcePath.
             _repoPassword.Secret = true;
             Application.Run(ntop);
 
@@ -44,6 +49,8 @@ namespace resticterm.Views
         {
             Program.dataManager.config.RepoPath = _repoPath.Text.ToString();
             Program.dataManager.config.SetRepoPassword( _repoPassword.Text.ToString());
+            Program.dataManager.config.RestorePath = _restorePath.Text.ToString();
+            Program.dataManager.config.SourcesBackupPath = _sourcePath.Text.ToString();
             Program.dataManager.SaveConfig();
             Application.RequestStop();
         }

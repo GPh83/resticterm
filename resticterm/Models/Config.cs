@@ -15,6 +15,12 @@ namespace resticterm.Models
         [JsonInclude]
         public String EncryptedRepoPassword { get; set; } = String.Empty;
 
+        [JsonInclude]
+        public String SourcesBackupPath { get; set; } = String.Empty;
+
+        [JsonInclude]
+        public String RestorePath { get; set; } = String.Empty;
+
         internal String MasterPassword { get; set; } = String.Empty;
 
         internal String GetRepoPassword()
@@ -24,7 +30,7 @@ namespace resticterm.Models
 
         internal void SetRepoPassword(String uncryptedPassword)
         {
-            EncryptedRepoPassword= Libs.Cryptography.Encrypt(uncryptedPassword, MasterPassword);
+            EncryptedRepoPassword = Libs.Cryptography.Encrypt(uncryptedPassword, MasterPassword);
         }
 
     }

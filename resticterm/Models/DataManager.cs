@@ -28,13 +28,13 @@ namespace resticterm.Models
             {
                 String jsonString;
                 jsonString = File.ReadAllText("config.json");
-                config = JsonSerializer.Deserialize<Config>(jsonString);
+                config = JsonSerializer.Deserialize<Config>(jsonString, new JsonSerializerOptions { WriteIndented = true });
             }
         }
 
         internal void SaveConfig()
         {
-            String jsonString = JsonSerializer.Serialize<Config>(config);
+            String jsonString = JsonSerializer.Serialize<Config>(config, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText("config.json", jsonString);
         }
 
