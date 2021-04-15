@@ -1,20 +1,38 @@
 # resticterm
 
 resticterm is a multi-platform UI for restic backup software. (https://restic.net/)  
-It's a terminal user interface, strange for Windows but useful through SSH under Linux for exemple.
+It's a terminal user interface, strange for Windows but useful through SSH under Linux.
+
+## Features
+- Manage local repository
+- Information
+- Backup 
+- Restore
+- Settings for easy use
+
+## Todo
+- SSH repository
 
 # Usage
 
-## Linux
-Download package, extract it and run : resticterm
+Download release, extract and run : resticterm.exe (Windows or Linux)
 
-## Windows 
 
-Download package, extract it and run : resticterm.exe
+# Contributing
 
-# Dev
+resticterm is written in C# and based on .NET 5  
+Made with VS2019 Community.
+Solution file :restciterm.sln
 
-resticterm is written in C# and based on .NET 5
+
+# Licence 
+
+resticterm Copyright(C) 2021 Philippe GRAILLE.  
+This program comes with ABSOLUTELY NO WARRANTY.  
+This is free software, and you are welcome to redistribute it under certain conditions, see GNU GPL V3 : https://www.gnu.org/licenses/
+
+
+
 
 
 

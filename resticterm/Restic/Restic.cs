@@ -32,7 +32,7 @@ namespace resticterm.Restic
         {
             String ret, rep;
 
-            ret = "---- Summary ----\n\n";
+            ret = "\n";
 
             ret += "Repository : " + _repoPath + "\n";
             rep = Run.Start("stats", _repoPath, _encryptedPassword);

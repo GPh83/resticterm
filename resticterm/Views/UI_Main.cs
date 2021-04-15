@@ -27,13 +27,12 @@ namespace resticterm.Views
             Application.Top.Add(win);
 
             // Information
-            var info = new TextView()
+            var info = new Label()
             {
                 X = 0,
                 Y = 0,
                 Width = Dim.Fill(),
-                Height = Dim.Fill(),
-                ReadOnly = true
+                Height = Dim.Fill()
             };
 
             if (String.IsNullOrWhiteSpace(Program.dataManager.config.EncryptedRepoPassword) || String.IsNullOrWhiteSpace(Program.dataManager.config.RepoPath))
@@ -43,9 +42,13 @@ namespace resticterm.Views
             }
             else
             {
-                info.Text = Program.restic.Summary();
+                var str = Program.restic.Summary();
+                str += "\n";
+                str += "resticterm Copyright(C) 2021 Philippe GRAILLE. This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions, see GNU GPL V3 : https://www.gnu.org/licenses/\n";
+                str += "GitHub : https://github.com/GPh83/resticterm/\n";
+                info.Text = str.Replace("\r", "");
             }
-                win.Add(info);
+            win.Add(info);
 
             var statusBar = new StatusBar(new StatusItem[] {
                 new StatusItem(Key.F1, "~F1~ Backup", ShowBackup),
