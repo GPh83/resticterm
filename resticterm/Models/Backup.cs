@@ -11,6 +11,9 @@ namespace resticterm.Models
     /// </summary>
     public class Backup
     {
+        /// <summary>
+        /// Status during backup
+        /// </summary>
         public class Status
         {
             public string message_type { get; set; }
@@ -21,7 +24,9 @@ namespace resticterm.Models
             public int bytes_done { get; set; }
         }
 
-
+        /// <summary>
+        /// Summary at backup end
+        /// </summary>
         public class Summary
         {
             public string message_type { get; set; }

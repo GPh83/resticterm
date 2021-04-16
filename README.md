@@ -20,9 +20,9 @@ Download release, extract and run : resticterm.exe (Windows or Linux)
 
 # Contributing
 
-resticterm is written in C# and based on .NET 5  
+**resticterm** is written in C# with .NET 5  
+Console UI is Terminal.Gui - Terminal GUI toolkit for .NET : https://github.com/migueldeicaza/gui.cs  
 Made with VS2019 Community.
-Solution file :restciterm.sln
 
 
 # Licence 
