@@ -7,7 +7,7 @@ using Terminal.Gui;
 
 namespace resticterm.Views
 {
-    class UI_Info
+    class UI_Browse
     {
         TextView info;
 
@@ -34,13 +34,13 @@ namespace resticterm.Views
 
             info = new TextView()
             {
-                X = 2,
-                Y = 2,
-                Width = Dim.Fill() - 4,
-                Height = Dim.Fill() - 4,
+                X = 0,
+                Y = 0,
+                Width = Dim.Fill() ,
+                Height = Dim.Fill(),
                 ReadOnly = true       
             };
-            info.Text = "Current state : ";
+            info.Text = "";
             win.Add(info);
 
             Application.Run(ntop);
@@ -48,8 +48,15 @@ namespace resticterm.Views
 
         void Test()
         {
-            //var ret = Restic.Run.Start("stats", "-r G:\\Backup\\repo");
-            //info.Text = ret;
+            var snapshots = Program.restic.GetSnapshots("latest");
+
+            var files = Program.restic.GetFilesFromSnapshots(snapshots[0].short_id);
+
+
+            //var ret = Program.restic._run.Start("ls latest --json ");
+            //info.Text += ret;
+            //ret = Program.restic._run.Start("snapshots --json");
+            //info.Text += ret;
         }
     }
 }

@@ -41,7 +41,7 @@ namespace resticterm.Restic
         /// </summary>
         /// <param name="command">Restic command and command parameters</param>
         /// <returns>Command console output </returns>
-        public String Start(String command)
+        public String Start(String command, int TimeOut = -1)
         {
             var p = new Process();
             var psi = new ProcessStartInfo();
@@ -63,12 +63,18 @@ namespace resticterm.Restic
             psi.EnvironmentVariables.Add("RESTIC_PASSWORD", Libs.Cryptography.Decrypt(EncryptedPassword, Program.dataManager.config.MasterPassword));
             psi.Arguments = command + " -r \"" + RepoPath + "\"";
 
-            // Excute
+            // Execute
             p.StartInfo = psi;
             p.Start();
-            p.WaitForExit();
+            p.WaitForExit(TimeOut);
 
-            return p.StandardOutput.ReadToEnd() + "\n" + p.StandardError.ReadToEnd();
+            var ret = p.StandardOutput.ReadToEnd();
+            var err = p.StandardError.ReadToEnd();
+            if (!String.IsNullOrWhiteSpace(err)) ret += "\n" + err;
+
+            p.Close();
+
+            return ret;
         }
 
         /// <summary>
@@ -81,6 +87,7 @@ namespace resticterm.Restic
         {
             var p = new Process();
             var psi = new ProcessStartInfo();
+            Summary ret;
 
             // Binary
             psi.WorkingDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Restic");
@@ -105,18 +112,18 @@ namespace resticterm.Restic
             String summary = "";
             while (!p.HasExited)
             {
-                var ret = p.StandardOutput.ReadLine();
-                if (ret != null)
+                var line = p.StandardOutput.ReadLine();
+                if (line != null)
                 {
                     //Debug.WriteLine(ret);
-                    if (ret.Contains("\"message_type\":\"status\""))
+                    if (line.Contains("\"message_type\":\"status\""))
                     {
-                        var status = JsonSerializer.Deserialize<Status>(RemoveESC(ret));
+                        var status = JsonSerializer.Deserialize<Status>(RemoveESC(line));
                         OnBackupStatus(status);
                     }
-                    else if (ret.Contains("\"message_type\":\"summary\""))
+                    else if (line.Contains("\"message_type\":\"summary\""))
                     {
-                        summary = ret;
+                        summary = line;
                     }
                 }
             }
@@ -134,15 +141,18 @@ namespace resticterm.Restic
                 }
 
                 if (!String.IsNullOrWhiteSpace(summary) && summary.Contains("\"message_type\":\"summary\""))
-                    return JsonSerializer.Deserialize<Summary>(RemoveESC(summary));
+                    ret= JsonSerializer.Deserialize<Summary>(RemoveESC(summary));
                 else
-                    return new Summary { message_type = "error", snapshot_id = "No summary" };
+                    ret= new Summary { message_type = "error", snapshot_id = "No summary" };
             }
             else
             {
-                return new Summary { message_type = "error", snapshot_id = "ExitCode = " + p.ExitCode.ToString() + "\n" + p.StandardError.ReadToEnd() };
+                ret= new Summary { message_type = "error", snapshot_id = "ExitCode = " + p.ExitCode.ToString() + "\n" + p.StandardError.ReadToEnd() };
             }
-
+            p.Close();
+            p.Dispose();
+            return ret;
+            
         }
 
         /// <summary>

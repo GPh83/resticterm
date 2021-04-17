@@ -44,7 +44,7 @@ namespace resticterm.Views
                 X = 0,
                 Y = 0,
                 Width = Dim.Fill(),
-                Height = 2
+                Height = 3
             };
             header.Text = "Path to repository : " + Program.dataManager.config.RepoPath + "\n";
             header.Text += "Sources to backup : " + Program.dataManager.config.SourcesBackupPath + "\n";
@@ -54,9 +54,9 @@ namespace resticterm.Views
             info = new Label()
             {
                 X = 0,
-                Y = Pos.Bottom(header) +1,
+                Y = Pos.Bottom(header),
                 Width = Dim.Fill(),
-                Height = Dim.Fill()-3
+                Height = Dim.Fill()-2
             };
             info.Text = "";
             win.Add(info);
@@ -65,7 +65,7 @@ namespace resticterm.Views
             current = new Label()
             {
                 X = 0,
-                Y = Pos.Bottom(info)+1,
+                Y = Pos.Bottom(info),
                 Width = Dim.Fill(),
                 Height = 1,
                 TextAlignment = TextAlignment.Centered

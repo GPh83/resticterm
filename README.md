@@ -5,10 +5,10 @@ It's a terminal user interface, strange for Windows but useful through SSH under
 
 ## Features
 - Manage local repository
-- Information
-- Backup 
-- Restore
+- Backup multi sources 
+- Restore 
 - Settings for easy use
+- Based on repository informations for use with command line or UI
 
 ## Todo
 - SSH repository

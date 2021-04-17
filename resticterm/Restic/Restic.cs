@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using static resticterm.Models.Backup;
 
@@ -14,7 +15,7 @@ namespace resticterm.Restic
 
     public class Restic
     {
-        Run _run;
+        public Run _run;        // TODO : Remove public (only for test)
 
         #region "Events"
         public event ProgressHandler Progress;
@@ -90,17 +91,51 @@ namespace resticterm.Restic
                     filesinfo += " Changed=" + summary.files_changed.ToString();
                     filesinfo += " Unmodified=" + summary.files_unmodified.ToString();
                     OnProgress(filesinfo, 1);
-                    OnProgress("  ID=" + summary.snapshot_id , -1);
-                    OnProgress("  " +filesinfo, -1);
-                    
+                    OnProgress("  ID=" + summary.snapshot_id, -1);
+                    OnProgress("  " + filesinfo, -1);
+
                 }
             }
             _run.BackupStatus -= BackupStatus;
         }
 
+        public List<Models.SnapshotItem> GetSnapshots(String id ="")
+        {
+            String rep;
+
+            rep = Run.RemoveESC(_run.Start("snapshots " + id + " --json"));
+            var snapshots  = JsonSerializer.Deserialize<List<Models.SnapshotItem>>(rep);
+            return snapshots;
+        }
+
+        public List<Models.FileDetails> GetFilesFromSnapshots(String id)
+        {
+            String rep;
+
+            rep = Run.RemoveESC(_run.Start("ls " + id + " --json",2000));
+            // TODO : Improve this conversion
+            rep = RemoveFirstLines(rep, 1).Replace("\n", ",").Replace("\r", "") ;
+            if (rep.EndsWith(",")) rep = rep.Substring(0, rep.Length - 1);
+            rep = "[" + rep + "]";
+            var files =  JsonSerializer.Deserialize<List<Models.FileDetails>>(rep) ;
+            return files;
+        }
+
+
+        #region "Private"
+
         private void BackupStatus(Status status)
         {
             OnProgress("Files done : " + status.files_done.ToString(), status.percent_done);
         }
+
+        public static string RemoveFirstLines(string text, int linesCount)
+        {
+            var lines = System.Text.RegularExpressions.Regex.Split(text, "\r\n|\r|\n").Skip(linesCount);
+            return string.Join(Environment.NewLine, lines.ToArray());
+        }
+
+        #endregion
+
     }
 }

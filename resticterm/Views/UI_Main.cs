@@ -6,14 +6,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Terminal.Gui;
 using resticterm.Restic;
+using System.Diagnostics;
 
 namespace resticterm.Views
 {
+
     /// <summary>
     /// Main screen with Menu
     /// </summary>
     public class UI_Main
     {
+        Label info;
+
         public void Create()
         {
             // Windows
@@ -27,7 +31,7 @@ namespace resticterm.Views
             Application.Top.Add(win);
 
             // Information
-            var info = new Label()
+            info = new Label()
             {
                 X = 0,
                 Y = 0,
@@ -42,18 +46,14 @@ namespace resticterm.Views
             }
             else
             {
-                var str = Program.restic.Summary();
-                str += "\n";
-                str += "resticterm Copyright(C) 2021 Philippe GRAILLE. This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions, see GNU GPL V3 : https://www.gnu.org/licenses/\n";
-                str += "GitHub : https://github.com/GPh83/resticterm/\n";
-                info.Text = str.Replace("\r", "");
+                DisplayRepoSummary();
             }
             win.Add(info);
 
             var statusBar = new StatusBar(new StatusItem[] {
                 new StatusItem(Key.F1, "~F1~ Backup", ShowBackup),
                 new StatusItem(Key.F2, "~F2~ Restore", null),
-                new StatusItem(Key.F3, "~F3~ Info", ShowInfo),
+                new StatusItem(Key.F3, "~F3~ Browse", ShowBrowser),
                 new StatusItem(Key.F8, "~F8~ Setup", ShowSetup),
                 new StatusItem(Key.F10, "~F10~ Quit", () => { Application.RequestStop(); })
             });
@@ -65,18 +65,29 @@ namespace resticterm.Views
         {
             var setup = new Views.UI_Setup();
             setup.Create();
+            DisplayRepoSummary();
         }
-        void ShowInfo()
+        void ShowBrowser()
         {
-            var info = new Views.UI_Info();
+            var info = new Views.UI_Browse();
             info.Create();
+            DisplayRepoSummary();
         }
         void ShowBackup()
         {
             var bak = new Views.UI_Backup();
             bak.Create();
+            DisplayRepoSummary();
         }
 
+        void DisplayRepoSummary()
+        {
+            var str = Program.restic.Summary();
+            str += "\n";
+            str += "resticterm Copyright(C) 2021 Philippe GRAILLE. This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions, see GNU GPL V3 : https://www.gnu.org/licenses/\n";
+            str += "GitHub : https://github.com/GPh83/resticterm/\n";
+            info.Text = str.Replace("\r", "");
+        }
 
     }
 }
