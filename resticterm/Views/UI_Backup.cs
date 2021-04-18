@@ -46,8 +46,9 @@ namespace resticterm.Views
                 Width = Dim.Fill(),
                 Height = 3
             };
-            header.Text = "Path to repository : " + Program.dataManager.config.RepoPath + "\n";
-            header.Text += "Sources to backup : " + Program.dataManager.config.SourcesBackupPath + "\n";
+            var msg = "Path to repository : " + Program.dataManager.config.RepoPath + "\n";
+            msg += "Sources to backup : " + Program.dataManager.config.SourcesBackupPath + "\n";
+            header.Text = msg.Replace("\r", "");
             win.Add(header);
 
             // Information
@@ -56,7 +57,7 @@ namespace resticterm.Views
                 X = 0,
                 Y = Pos.Bottom(header),
                 Width = Dim.Fill(),
-                Height = Dim.Fill()-2
+                Height = Dim.Fill() - 2
             };
             info.Text = "";
             win.Add(info);
@@ -80,7 +81,7 @@ namespace resticterm.Views
                 Y = Pos.Bottom(current),
                 Width = Dim.Fill(),
                 Height = 1,
-                Fraction = 1                
+                Fraction = 1
             };
             win.Add(pBar);
 
@@ -101,7 +102,7 @@ namespace resticterm.Views
             if (percent >= 0)
             {
                 pBar.Fraction = percent;
-                current.Text =  message.Replace("\r", "");
+                current.Text = message.Replace("\r", "");
             }
             else
             {

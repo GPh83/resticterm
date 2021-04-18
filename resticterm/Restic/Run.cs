@@ -61,6 +61,7 @@ namespace resticterm.Restic
             psi.UseShellExecute = false;
             // Password
             psi.EnvironmentVariables.Add("RESTIC_PASSWORD", Libs.Cryptography.Decrypt(EncryptedPassword, Program.dataManager.config.MasterPassword));
+            //psi.EnvironmentVariables.Add("RESTIC_REPOSITORY", "local:\"" + RepoPath + "\"");
             psi.Arguments = command + " -r \"" + RepoPath + "\"";
 
             // Execute
@@ -104,7 +105,7 @@ namespace resticterm.Restic
             psi.UseShellExecute = false;
             psi.EnvironmentVariables.Add("RESTIC_PASSWORD", Libs.Cryptography.Decrypt(EncryptedPassword, Program.dataManager.config.MasterPassword));
             psi.Arguments = "backup " + flags + " \"" + source + "\" -r \"" + RepoPath + "\" --json";
-
+            
             p.StartInfo = psi;
             p.Start();
 

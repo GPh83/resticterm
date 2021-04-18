@@ -50,23 +50,21 @@ namespace resticterm.Views
             };
             win.Add(tv);
             ShowFiles(snapshotId);
-            //tv.CellActivated += onCellActivated;
+            tv.CellActivated += onCellActivated;
 
             Application.Run(ntop);
         }
 
         void Quit()
         {
-            //tv.CellActivated -= onCellActivated;
+            tv.CellActivated -= onCellActivated;
             Application.RequestStop();
         }
 
 
         void onCellActivated(CellActivatedEventArgs cellEvt)
         {
-            var id = cellEvt.Table.Rows[cellEvt.Row][0];
-            var files = new Views.UI_Files();
-            files.Create(id.ToString());
+            FileSave();
         }
 
 
@@ -76,19 +74,28 @@ namespace resticterm.Views
             var ret = Program.restic._run.Start("dump " + currentSnapshotId + " \"" + fName + "\"", 5000);
             //info.Text += ret;
         }
+
         void FileSave()
         {
-            var fName = tv.Table.Rows[tv.SelectedRow][0];
-            var saveDialog = new SaveDialog("Save file", "Fileptah and name of the restore file");
-            saveDialog.FilePath = "./" + Path.GetFileName(fName.ToString());
+            var filenameToRestore = tv.Table.Rows[tv.SelectedRow][1];
+            var saveDialog = new SaveDialog("Restore file(s)", "Choose directory where to restore file(s)");
+
+            saveDialog.DirectoryPath = Path.Combine(Program.dataManager.config.RestorePath,"restore_"+DateTime.Now.ToString("yyyyMMdd"));
+            saveDialog.Prompt = "Restore";
+            
             Application.Run(saveDialog);
             if (saveDialog.FileName != null)
             {
                 var command = "restore " + currentSnapshotId;
-                command += " --target \"" + Path.Combine(saveDialog.FilePath.ToString(),saveDialog.FileName.ToString()) + "\"";
-                command += " --include \"" + fName + "\"";
-                var ret = Program.restic._run.Start( command, 5000);
-                MessageBox.Query("File restore", ret, "Ok");
+                command += " --target \"" + saveDialog.FilePath.ToString() + "\"";
+                command += " --include \"" + filenameToRestore + "\"";
+                //var command = "dump " + currentSnapshotId;
+                //command += " \"" +filenameToRestore+ "\"";
+                //command += " --archive \"zip\"";
+                ////command += " > " + Path.Combine(saveDialog.FilePath.ToString(), saveDialog.FileName.ToString());
+
+                var ret = Program.restic._run.Start(command, 5000);
+                MessageBox.Query("File save", ret, "Ok");
             }
         }
 
@@ -97,12 +104,27 @@ namespace resticterm.Views
             var files = Program.restic.GetFilesFromSnapshots(snapshotId);
 
             var dt = new DataTable();
+            dt.Columns.Add("T");
             dt.Columns.Add("Path");
             dt.Columns.Add("Modif. Time");
 
             foreach (Models.FileDetails f in files)
             {
                 var dr = dt.NewRow();
+                switch (f.type)
+                {
+                    case "file":
+                        dr["T"] = "|";
+                        break;
+
+                    case "dir":
+                        dr["T"] = "+";
+                        break;
+
+                    default:
+                        dr["T"] = "";
+                        break;
+                }
                 dr["Path"] = f.path;
                 dr["Modif. Time"] = f.mtime;
                 dt.Rows.Add(dr);

@@ -19,6 +19,7 @@ namespace resticterm.Views
             var ntop = new Toplevel();
 
             var statusBar = new StatusBar(new StatusItem[] {
+                new StatusItem(Key.F1, "~F1~ Select", onSelect),
                 new StatusItem(Key.F10, "~F10~ Return", Quit)
             });
             ntop.Add(statusBar);
@@ -70,6 +71,13 @@ namespace resticterm.Views
         void onCellActivated(CellActivatedEventArgs cellEvt)
         {
             var id = cellEvt.Table.Rows[cellEvt.Row][0];
+            var files = new Views.UI_Files();
+            files.Create(id.ToString());
+        }
+
+        void onSelect()
+        {
+            var id = tv.Table.Rows[tv.SelectedRow][0];
             var files = new Views.UI_Files();
             files.Create(id.ToString());
         }

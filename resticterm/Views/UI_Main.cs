@@ -52,8 +52,7 @@ namespace resticterm.Views
 
             var statusBar = new StatusBar(new StatusItem[] {
                 new StatusItem(Key.F1, "~F1~ Backup", ShowBackup),
-                new StatusItem(Key.F2, "~F2~ Restore", null),
-                new StatusItem(Key.F3, "~F3~ Browse", ShowBrowser),
+                new StatusItem(Key.F2, "~F2~ Browse/Restore", ShowBrowser),
                 new StatusItem(Key.F8, "~F8~ Setup", ShowSetup),
                 new StatusItem(Key.F10, "~F10~ Quit", () => { Application.RequestStop(); })
             });
