@@ -3,7 +3,7 @@
 resticterm is a multi-platform UI for restic backup software. (https://restic.net/)  
 It's a terminal user interface, strange for Windows but useful through SSH under Linux.
 
-![MainScreen](resticterm\Img\0.2_Screen.png)
+![MainScreen](https://github.com/GPh83/resticterm/blob/master/resticterm/Img/0.2_Screen.png)
 
 ## Features
 - Manage local repository
