@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Terminal.Gui;
 using resticterm.Restic;
 using System.Diagnostics;
+using System.IO;
 
 namespace resticterm.Views
 {
@@ -46,7 +47,10 @@ namespace resticterm.Views
             }
             else
             {
-                DisplayRepoSummary();
+                if( Directory.Exists( Program.dataManager.config.RepoPath))
+                    DisplayRepoSummary();
+                else
+                    info.Text = "Bad Repository path\nUse Setup\n";
             }
             win.Add(info);
 
@@ -64,6 +68,7 @@ namespace resticterm.Views
         {
             var setup = new Views.UI_Setup();
             setup.Create();
+            Program.restic = new Restic.Restic(Program.dataManager.config.RepoPath, Program.dataManager.config.EncryptedRepoPassword);
             DisplayRepoSummary();
         }
         void ShowBrowser()

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace resticterm.Models
 {
+     /// <summary>
+    /// Restic JSON Response for ls command
+    /// </summary>   
     public class FileDetails
     {
         public string name { get; set; }

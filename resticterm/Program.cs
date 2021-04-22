@@ -21,6 +21,7 @@ namespace resticterm
         static void Main(string[] args)
         {
             Application.Init();
+            // TODO : Master password
 
             // Retrieve necessary data
             dataManager = new Models.DataManager();

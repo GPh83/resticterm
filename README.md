@@ -3,15 +3,19 @@
 resticterm is a multi-platform UI for restic backup software. (https://restic.net/)  
 It's a terminal user interface, strange for Windows but useful through SSH under Linux.
 
+![MainScreen](resticterm\Img\0.2_Screen.png)
+
 ## Features
 - Manage local repository
 - Backup multi sources 
-- Restore 
+- Browse snapshots
+- Restore partial or full snapshot
 - Settings for easy use
 - Based on repository informations for use with command line or UI
 
 ## Todo
 - SSH repository
+- Master password
 
 # Usage
 

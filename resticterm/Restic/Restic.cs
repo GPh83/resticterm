@@ -12,12 +12,17 @@ namespace resticterm.Restic
 
     // TODO : Make function for auto-update
 
-
+    /// <summary>
+    /// Manager for restic binary executable
+    /// </summary>
     public class Restic
     {
         public Run _run;        // TODO : Remove public (only for test)
 
         #region "Events"
+        /// <summary>
+        /// Report backup progress
+        /// </summary>
         public event ProgressHandler Progress;
 
         /// <summary>

@@ -14,6 +14,9 @@ namespace resticterm.Restic
 {
     public delegate void BackupStatusHandler(Status status);
 
+    /// <summary>
+    /// Running restic binary
+    /// </summary>
     public class Run
     {
 
