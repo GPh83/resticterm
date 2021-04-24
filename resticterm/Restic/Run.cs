@@ -48,6 +48,7 @@ namespace resticterm.Restic
         {
             var p = new Process();
             var psi = new ProcessStartInfo();
+            String ret,err;
 
             // Select binary
             psi.WorkingDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Restic");
@@ -63,20 +64,28 @@ namespace resticterm.Restic
             psi.RedirectStandardError = true;
             psi.UseShellExecute = false;
             // Password
-            psi.EnvironmentVariables.Add("RESTIC_PASSWORD", Libs.Cryptography.Decrypt(EncryptedPassword, Program.dataManager.config.MasterPassword));
-            //psi.EnvironmentVariables.Add("RESTIC_REPOSITORY", "local:\"" + RepoPath + "\"");
-            psi.Arguments = command + " -r \"" + RepoPath + "\"";
+            var pwd = Libs.Cryptography.Decrypt(EncryptedPassword, Program.dataManager.config.MasterPassword);
+            if (String.IsNullOrEmpty(pwd))
+            {
+                ret = "Invalid master password or password can't be empty !";
+            }
+            else
+            {
+                psi.EnvironmentVariables.Add("RESTIC_PASSWORD", Libs.Cryptography.Decrypt(EncryptedPassword, Program.dataManager.config.MasterPassword));
+                //psi.EnvironmentVariables.Add("RESTIC_REPOSITORY", "local:\"" + RepoPath + "\"");
+                psi.Arguments = command + " -r \"" + RepoPath + "\"";
 
-            // Execute
-            p.StartInfo = psi;
-            p.Start();
-            p.WaitForExit(TimeOut);
+                // Execute
+                p.StartInfo = psi;
+                p.Start();
+                p.WaitForExit(TimeOut);
 
-            var ret = p.StandardOutput.ReadToEnd();
-            var err = p.StandardError.ReadToEnd();
-            if (!String.IsNullOrWhiteSpace(err)) ret += "\n" + err;
+                ret = p.StandardOutput.ReadToEnd();
+                err = p.StandardError.ReadToEnd();
 
-            p.Close();
+                if (!String.IsNullOrWhiteSpace(err)) ret += "\n" + err;
+                p.Close();
+            }
 
             return ret;
         }
@@ -108,7 +117,7 @@ namespace resticterm.Restic
             psi.UseShellExecute = false;
             psi.EnvironmentVariables.Add("RESTIC_PASSWORD", Libs.Cryptography.Decrypt(EncryptedPassword, Program.dataManager.config.MasterPassword));
             psi.Arguments = "backup " + flags + " \"" + source + "\" -r \"" + RepoPath + "\" --json";
-            
+
             p.StartInfo = psi;
             p.Start();
 
@@ -140,23 +149,23 @@ namespace resticterm.Restic
                 {
                     summary = p.StandardOutput.ReadLine();
                     if (String.IsNullOrWhiteSpace(summary) || !summary.Contains("\"message_type\":\"summary\""))
-                            summary = "";
+                        summary = "";
                     maxRead--;
                 }
 
                 if (!String.IsNullOrWhiteSpace(summary) && summary.Contains("\"message_type\":\"summary\""))
-                    ret= JsonSerializer.Deserialize<Summary>(RemoveESC(summary));
+                    ret = JsonSerializer.Deserialize<Summary>(RemoveESC(summary));
                 else
-                    ret= new Summary { message_type = "error", snapshot_id = "No summary" };
+                    ret = new Summary { message_type = "error", snapshot_id = "No summary" };
             }
             else
             {
-                ret= new Summary { message_type = "error", snapshot_id = "ExitCode = " + p.ExitCode.ToString() + "\n" + p.StandardError.ReadToEnd() };
+                ret = new Summary { message_type = "error", snapshot_id = "ExitCode = " + p.ExitCode.ToString() + "\n" + p.StandardError.ReadToEnd() };
             }
             p.Close();
             p.Dispose();
             return ret;
-            
+
         }
 
         /// <summary>

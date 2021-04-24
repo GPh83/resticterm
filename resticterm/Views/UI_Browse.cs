@@ -14,13 +14,13 @@ namespace resticterm.Views
         Label info;
         TableView tv;
 
-        public void Create()
+        public void ShowModal()
         {
             var ntop = new Toplevel();
 
             var statusBar = new StatusBar(new StatusItem[] {
-                new StatusItem(Key.F1, "~F1~ Select", onSelect),
-                new StatusItem(Key.F10, "~F10~ Return", Quit)
+                new StatusItem(Key.Enter, "~Enter~ Enter", onSelect),
+                new StatusItem(Key.Esc, "~Esc~ Return", Quit)
             });
             ntop.Add(statusBar);
             ntop.StatusBar = statusBar;
@@ -72,14 +72,14 @@ namespace resticterm.Views
         {
             var id = cellEvt.Table.Rows[cellEvt.Row][0];
             var files = new Views.UI_Files();
-            files.Create(id.ToString());
+            files.ShowModal(id.ToString());
         }
 
         void onSelect()
         {
             var id = tv.Table.Rows[tv.SelectedRow][0];
             var files = new Views.UI_Files();
-            files.Create(id.ToString());
+            files.ShowModal(id.ToString());
         }
 
 

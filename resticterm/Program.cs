@@ -30,15 +30,13 @@ namespace resticterm
             // Initialize repo manager
             restic = new Restic.Restic(dataManager.config.RepoPath, dataManager.config.EncryptedRepoPassword);
 
-            // TODO : Master password 
-            dataManager.config.MasterPassword = "1234";
-            
+            // Default Master password 
+            dataManager.config.MasterPassword = "8YSZm5bIaWdN6Itd";
+
             // Start UI
             var main = new Views.UI_Main();
             main.Create();
             Application.Run();
-
-
         }
     }
 }

@@ -13,14 +13,15 @@ namespace resticterm.Views
         TextField _repoPassword;
         TextField _restorePath;
         TextView _sourcePath;
+        CheckBox _useMasterPassword;
 
-        public void Create()
+        public void ShowModal()
         {
             var ntop = new Toplevel();
 
             var statusBar = new StatusBar(new StatusItem[] {
                 new StatusItem(Key.F1, "~F1~ Save", SaveSetup),
-                new StatusItem(Key.F10, "~F10~ Return", () => { Application.RequestStop(); })
+                new StatusItem(Key.Esc, "~Esc~ Return", () => { Application.RequestStop(); })
             });
             ntop.Add(statusBar);
             ntop.StatusBar = statusBar;
@@ -35,10 +36,12 @@ namespace resticterm.Views
             };
             ntop.Add(win);
 
-            Libs.ViewDesign.SetField(ntop,ref _repoPath, "Path to repository", Program.dataManager.config.RepoPath ,30,3);
-            Libs.ViewDesign.SetField(ntop,ref _repoPassword, "Repository password", Program.dataManager.config.GetRepoPassword(), 30, 4);
-            Libs.ViewDesign.SetField(ntop, ref _restorePath, "Restore path", Program.dataManager.config.RestorePath, 30, 6);
-            Libs.ViewDesign.SetField(ntop, ref _sourcePath, "Backup Paths", Program.dataManager.config.SourcesBackupPath, 30, 7,8);
+            Libs.ViewDesign.SetField(ntop, ref _repoPath, "Path to repository", Program.dataManager.config.RepoPath, 30, 3);
+            Libs.ViewDesign.SetField(ntop, ref _repoPassword, "Repository password", Program.dataManager.config.GetRepoPassword(), 30, 4);
+            Libs.ViewDesign.SetCheck(ntop, ref _useMasterPassword, "Use master password", Program.dataManager.config.UseMasterPassword, 30, 5);
+            Libs.ViewDesign.SetField(ntop, ref _restorePath, "Restore path", Program.dataManager.config.RestorePath, 30, 7);
+            Libs.ViewDesign.SetField(ntop, ref _sourcePath, "Backup Paths", Program.dataManager.config.SourcesBackupPath, 30, 7, 8);
+
             //_sourcePath.
             _repoPassword.Secret = true;
             Application.Run(ntop);
@@ -48,7 +51,8 @@ namespace resticterm.Views
         void SaveSetup()
         {
             Program.dataManager.config.RepoPath = _repoPath.Text.ToString();
-            Program.dataManager.config.SetRepoPassword( _repoPassword.Text.ToString());
+            Program.dataManager.config.SetRepoPassword(_repoPassword.Text.ToString());
+            Program.dataManager.config.UseMasterPassword=_useMasterPassword.Checked;
             Program.dataManager.config.RestorePath = _restorePath.Text.ToString();
             Program.dataManager.config.SourcesBackupPath = _sourcePath.Text.ToString();
             Program.dataManager.SaveConfig();

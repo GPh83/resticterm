@@ -21,6 +21,10 @@ namespace resticterm.Models
         [JsonInclude]
         public String RestorePath { get; set; } = String.Empty;
 
+        [JsonInclude]
+        public bool UseMasterPassword { get; set; } = false;
+
+
         internal String MasterPassword { get; set; } = String.Empty;
 
         internal String GetRepoPassword()

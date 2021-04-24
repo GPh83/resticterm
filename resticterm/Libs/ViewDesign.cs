@@ -23,11 +23,11 @@ namespace resticterm.Libs
         /// <param name="y">Line</param>
         public static void SetField(Toplevel ntop, TextField textField, String caption, String text, int y)
         {
-            
+
             var f = new Label(caption) { X = 1, Y = y, TextAlignment = TextAlignment.Right };
             ntop.Add(f);
-  
-            var t = new TextField(text.Replace("\r", "")) { X = Pos.Right(f)+1, Y = y, Width = Dim.Fill() -1};
+
+            var t = new TextField(text.Replace("\r", "")) { X = Pos.Right(f) + 1, Y = y, Width = Dim.Fill() - 1 };
             ntop.Add(t);
 
         }
@@ -47,7 +47,7 @@ namespace resticterm.Libs
             var f = new Label(caption) { X = 1, Y = y, TextAlignment = TextAlignment.Right, Width = xCol };
             ntop.Add(f);
 
-            textField = new TextField(text.Replace("\r","")) { X = xCol + +2, Y = y, Width = Dim.Fill() - 1  };
+            textField = new TextField(text.Replace("\r", "")) { X = xCol + +2, Y = y, Width = Dim.Fill() - 1 };
             ntop.Add(textField);
 
         }
@@ -67,11 +67,17 @@ namespace resticterm.Libs
             var f = new Label(caption) { X = 1, Y = y, TextAlignment = TextAlignment.Right, Width = xCol };
             ntop.Add(f);
 
-            textField = new TextView() { X = xCol + +2, Y = y, Width = Dim.Fill() - 1 , Text = text.Replace("\r", ""), Height = height , ColorScheme = Colors.Dialog };
+            textField = new TextView() { X = xCol + +2, Y = y, Width = Dim.Fill() - 1, Text = text.Replace("\r", ""), Height = height, ColorScheme = Colors.Dialog };
             ntop.Add(textField);
 
         }
 
+        public static void SetCheck(Toplevel ntop, ref CheckBox checkBox, String caption, bool value, int xCol, int y)
+        {
 
+            var f = new CheckBox(caption, value) { X = xCol + 2, Y = y };
+            ntop.Add(f);
+            checkBox = f;
+        }
     }
 }

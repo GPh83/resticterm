@@ -17,15 +17,14 @@ namespace resticterm.Views
         TableView tv;
         String currentSnapshotId;
 
-        public void Create(String snapshotId)
+        public void ShowModal(String snapshotId)
         {
             currentSnapshotId = snapshotId;
             var ntop = new Toplevel();
 
             var statusBar = new StatusBar(new StatusItem[] {
-                new StatusItem(Key.F1, "~F1~ Save", FileSave),
-                //new StatusItem(Key.F2, "~F2~ View", FileView),
-                new StatusItem(Key.F10, "~F10~ Return", Quit)
+                new StatusItem(Key.Enter, "~Enter~ Save", FileSave),
+                new StatusItem(Key.Esc, "~Esc~ Return", Quit)
             });
             ntop.Add(statusBar);
             ntop.StatusBar = statusBar;

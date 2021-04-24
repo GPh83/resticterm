@@ -18,11 +18,12 @@ namespace resticterm.Views
     public class UI_Main
     {
         Label info;
+        Window win;
 
         public void Create()
         {
             // Windows
-            var win = new Window("Restic Terminal V" + Assembly.GetExecutingAssembly().GetName().Version.ToString())
+            win = new Window("Restic Terminal V" + Assembly.GetExecutingAssembly().GetName().Version.ToString())
             {
                 X = 0,
                 Y = 0,
@@ -30,6 +31,8 @@ namespace resticterm.Views
                 Height = Dim.Fill() - 1
             };
             Application.Top.Add(win);
+            Application.Top.Ready += () => { MainReady(); };
+
 
             // Information
             info = new Label()
@@ -39,19 +42,6 @@ namespace resticterm.Views
                 Width = Dim.Fill(),
                 Height = Dim.Fill()
             };
-
-            if (String.IsNullOrWhiteSpace(Program.dataManager.config.EncryptedRepoPassword) || String.IsNullOrWhiteSpace(Program.dataManager.config.RepoPath))
-            {
-                // Bad parameters
-                info.Text = "Repository and password undefined\nUse Setup\n";
-            }
-            else
-            {
-                if( Directory.Exists( Program.dataManager.config.RepoPath))
-                    DisplayRepoSummary();
-                else
-                    info.Text = "Bad Repository path\nUse Setup\n";
-            }
             win.Add(info);
 
             var statusBar = new StatusBar(new StatusItem[] {
@@ -64,23 +54,48 @@ namespace resticterm.Views
 
         }
 
+        public void MainReady()
+        {
+            // Master password if necessary
+            if (Program.dataManager.config.UseMasterPassword)
+            {
+                var pwd = new Views.UI_MasterPassword();
+                pwd.ShowModal();
+            }
+            
+            // Config state
+            if (String.IsNullOrWhiteSpace(Program.dataManager.config.EncryptedRepoPassword) || String.IsNullOrWhiteSpace(Program.dataManager.config.RepoPath))
+            {
+                // Bad parameters
+                info.Text = "Repository or password undefined\nUse Setup\n";
+            }
+            else
+            {
+                if (Directory.Exists(Program.dataManager.config.RepoPath))
+                    DisplayRepoSummary();
+                else
+                    info.Text = "Bad Repository path\nUse Setup\n";
+            }
+        }
+
+
         void ShowSetup()
         {
             var setup = new Views.UI_Setup();
-            setup.Create();
+            setup.ShowModal();
             Program.restic = new Restic.Restic(Program.dataManager.config.RepoPath, Program.dataManager.config.EncryptedRepoPassword);
             DisplayRepoSummary();
         }
         void ShowBrowser()
         {
             var info = new Views.UI_Browse();
-            info.Create();
+            info.ShowModal();
             DisplayRepoSummary();
         }
         void ShowBackup()
         {
             var bak = new Views.UI_Backup();
-            bak.Create();
+            bak.ShowModal();
             DisplayRepoSummary();
         }
 

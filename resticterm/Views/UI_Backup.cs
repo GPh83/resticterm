@@ -16,14 +16,14 @@ namespace resticterm.Views
         /// <summary>
         /// Design and show View
         /// </summary>
-        public void Create()
+        public void ShowModal()
         {
             var ntop = new Toplevel();
 
             // StatusBar
             var statusBar = new StatusBar(new StatusItem[] {
-                new StatusItem(Key.F1, "~F1~ Backup", StartBackup),
-                new StatusItem(Key.F10, "~F10~ Return", () => { Application.RequestStop(); })
+                new StatusItem(Key.Enter, "~Enter~ Backup", StartBackup),
+                new StatusItem(Key.Esc, "~Esc~ Return", () => { Application.RequestStop(); })
             });
             ntop.Add(statusBar);
             ntop.StatusBar = statusBar;

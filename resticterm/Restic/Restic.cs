@@ -56,21 +56,35 @@ namespace resticterm.Restic
             rep = _run.Start("stats");
 
             var lines = rep.Split("\n");
-            ret += "    " + lines[2] + " \n";
-            ret += "    " + lines[3] + " \n";
-            ret += "    " + lines[4] + " \n";
-            ret += "\n";
+            if (lines.Length > 3)
+            {
+                ret += "    " + lines[2] + " \n";
+                ret += "    " + lines[3] + " \n";
+                ret += "    " + lines[4] + " \n";
+                ret += "\n";
+            }
+            else
+            {
+                ret = rep + "\n" + "\n";
+            }
 
             ret += ">> Last backup :\n";
             rep = _run.Start("snapshots latest");
             lines = rep.Split("\n");
-            ret += "    " + lines[0] + " \n";
-            ret += "    " + lines[2] + " \n";
-            ret += "\n";
+            if (lines.Length > 1)
+            {
+                ret += "    " + lines[0] + " \n";
+                ret += "    " + lines[2] + " \n";
+                ret += "\n";
+            }
+            else
+            {
+                ret = rep + "\n" + "\n";
+            }
 
             rep = _run.Start("version");
             ret += ">> restic version :\n";
-            ret += "    " + rep;
+            ret += "    " + rep + "\n";
 
             return ret;
         }
