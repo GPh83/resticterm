@@ -1,4 +1,10 @@
-![licence](https://img.shields.io/badge/licence-GPL3-green)  ![issues](https://img.shields.io/bitbucket/issues-raw/GPh83/resticterm)  ![commit](https://img.shields.io/github/last-commit/GPh83/resticterm)  ![platform](https://img.shields.io/badge/platform-Windows%20Linux-blue)
+
+[![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
+![platform](https://img.shields.io/badge/platform-Windows%20Linux-blue)
+![commit](https://img.shields.io/github/last-commit/GPh83/resticterm) 
+![issues](https://img.shields.io/bitbucket/issues-raw/GPh83/resticterm) 
+
+
   
 # resticterm
 
