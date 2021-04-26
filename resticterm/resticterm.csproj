@@ -5,7 +5,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <StartupObject>resticterm.Program</StartupObject>
     <ApplicationIcon>restictermico.ico</ApplicationIcon>
-    <Version>0.2</Version>
+    <Version>0.3</Version>
     <Authors>Philippe GRAILLE</Authors>
     <Company />
     <Description>multi-platform UI for restic backup software.
@@ -20,7 +20,7 @@
 </PackageReleaseNotes>
     <SignAssembly>false</SignAssembly>
     <NoWin32Manifest>true</NoWin32Manifest>
-    <AssemblyVersion>0.2.0.0</AssemblyVersion>
+    <AssemblyVersion>0.3.0.0</AssemblyVersion>
 
     <!-- <PublishSingleFile>true</PublishSingleFile>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>

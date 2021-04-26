@@ -52,6 +52,11 @@ namespace resticterm.Views
         void SaveSetup()
         {
             Program.dataManager.config.MasterPassword = _masterPassword.Text.ToString();
+            if(!String.IsNullOrWhiteSpace(Program.dataManager.config.EncryptedRepoPassword) && Program.dataManager.config.GetRepoPassword()=="")
+            {
+                if (MessageBox.ErrorQuery("Bad master password", "Bad master password ! \nIf you continue you must redefine repository password in setup.", "Continue","Quit") !=0) 
+                    Environment.Exit(-1);
+            }
             Application.RequestStop();            
         }
 

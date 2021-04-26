@@ -140,6 +140,31 @@ namespace resticterm.Restic
             return files;
         }
 
+        public String Check()
+        {
+            String rep;
+
+            rep = Run.RemoveESC(_run.Start("check"));
+            return rep.Replace("\r", "");
+        }
+
+        public String Unlock()
+        {
+            String rep;
+
+            rep = Run.RemoveESC(_run.Start("unlock"));
+            return rep.Replace("\r", "");
+        }
+
+        public String Create()
+        {
+            String rep;
+
+            var uncryptedPassword = Program.dataManager.config.GetRepoPassword();
+            rep = Run.RemoveESC(_run.Start("init",-1, uncryptedPassword + "\n"+ uncryptedPassword));
+            return rep.Replace("\r", "");
+        }
+
 
         #region "Private"
 

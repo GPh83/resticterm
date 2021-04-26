@@ -47,11 +47,11 @@ namespace resticterm.Views
             var statusBar = new StatusBar(new StatusItem[] {
                 new StatusItem(Key.F1, "~F1~ Backup", ShowBackup),
                 new StatusItem(Key.F2, "~F2~ Browse/Restore", ShowBrowser),
-                new StatusItem(Key.F8, "~F8~ Setup", ShowSetup),
+                new StatusItem(Key.F3, "~F3~ Init/Tools", ShowTools),
+                new StatusItem(Key.F8, "~F8~ Setup", () => { ShowSetup(); }),
                 new StatusItem(Key.F10, "~F10~ Quit", () => { Application.RequestStop(); })
             });
             Application.Top.Add(statusBar);
-
         }
 
         public void MainReady()
@@ -62,51 +62,86 @@ namespace resticterm.Views
                 var pwd = new Views.UI_MasterPassword();
                 pwd.ShowModal();
             }
-            
-            // Config state
-            if (String.IsNullOrWhiteSpace(Program.dataManager.config.EncryptedRepoPassword) || String.IsNullOrWhiteSpace(Program.dataManager.config.RepoPath))
-            {
-                // Bad parameters
-                info.Text = "Repository or password undefined\nUse Setup\n";
-            }
-            else
-            {
-                if (Directory.Exists(Program.dataManager.config.RepoPath))
-                    DisplayRepoSummary();
-                else
-                    info.Text = "Bad Repository path\nUse Setup\n";
-            }
+            DisplayRepoSummary();
+
         }
 
 
-        void ShowSetup()
+        void ShowSetup(String message = "")
         {
             var setup = new Views.UI_Setup();
-            setup.ShowModal();
+            setup.ShowModal(message);
             Program.restic = new Restic.Restic(Program.dataManager.config.RepoPath, Program.dataManager.config.EncryptedRepoPassword);
             DisplayRepoSummary();
         }
+
         void ShowBrowser()
         {
-            var info = new Views.UI_Browse();
-            info.ShowModal();
-            DisplayRepoSummary();
+            var chk = Program.dataManager.config.CheckValidity();
+            if (chk == "")
+            {
+                var info = new Views.UI_Browse();
+                info.ShowModal();
+                DisplayRepoSummary();
+            }
+            else
+            {
+                MessageBox.ErrorQuery("Error", "Invalid setup, use Setup !\n\n" + chk, "Ok");
+            }
         }
+
         void ShowBackup()
         {
-            var bak = new Views.UI_Backup();
-            bak.ShowModal();
-            DisplayRepoSummary();
+            var chk = Program.dataManager.config.CheckValidity();
+            if (chk == "")
+            {
+                var bak = new Views.UI_Backup();
+                bak.ShowModal();
+                DisplayRepoSummary();
+            }
+            else
+            {
+                MessageBox.ErrorQuery("Error", "Invalid setup, use Setup !\n\n" + chk, "Ok");
+            }
+        }
+
+        void ShowTools()
+        {
+            var chk = Program.dataManager.config.CheckValidity();
+            if (chk == "")
+            {
+                var tools = new Views.UI_Tools();
+                tools.ShowModal();
+                DisplayRepoSummary();
+            }
+            else
+            {
+                MessageBox.ErrorQuery("Error", "Invalid setup, use Setup !\n\n"+chk, "Ok");
+            }
         }
 
         void DisplayRepoSummary()
         {
-            var str = Program.restic.Summary();
-            str += "\n";
-            str += "resticterm Copyright(C) 2021 Philippe GRAILLE. This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions, see GNU GPL V3 : https://www.gnu.org/licenses/\n";
-            str += "GitHub : https://github.com/GPh83/resticterm/\n";
-            info.Text = str.Replace("\r", "");
-        }
+            var chk = Program.dataManager.config.CheckValidity();
+            if (chk != "")
+            {
+                info.Text = "Bad setup !\n\n" + chk;
+                ShowSetup(chk);
+                //if (Program.dataManager.config.CheckValidity() != "")
+                //{
+                //    info.Text = "Bad setup !\n\n" + chk;
+                //}
+            }
+            else
+            {
 
+                var str = Program.restic.Summary();
+                str += "\n";
+                str += "resticterm Copyright(C) 2021 Philippe GRAILLE. This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions, see GNU GPL V3 : https://www.gnu.org/licenses/\n";
+                str += "GitHub : https://github.com/GPh83/resticterm/\n";
+                info.Text = str.Replace("\r", "");
+                Application.Refresh();
+            }
+        }
     }
 }

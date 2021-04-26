@@ -1,27 +1,13 @@
 
-# Features
 
-- Backup
-    - Create repo
-        - Local
-        - SSH
-    - Do backup 
-      - Folders
-      - DB (mssql, mysql)
-      - 
-- Restore
-    - All files in snapshot
-    - Selected file in repos
+# To do
 
-- Repo manager
-    - List snapshots
-        - List / view files
-    - Check 
-    - Clean 
+- Add use of SSH repository
+- Wiki documentation
+     
+# Ideas 
 
-- Planned backup 
+- Export database and save it in repository (mssql, mysql)
+- Create planned backup 
     - cron on linux
     - Task scheduler on Windows
-
-- Setup
-    

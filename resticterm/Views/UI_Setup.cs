@@ -15,13 +15,13 @@ namespace resticterm.Views
         TextView _sourcePath;
         CheckBox _useMasterPassword;
 
-        public void ShowModal()
+        public void ShowModal(String message)
         {
             var ntop = new Toplevel();
 
             var statusBar = new StatusBar(new StatusItem[] {
                 new StatusItem(Key.F1, "~F1~ Save", SaveSetup),
-                new StatusItem(Key.Esc, "~Esc~ Return", () => { Application.RequestStop(); })
+                new StatusItem(Key.Esc, "~Esc~ Return", () => { Quit(); })
             });
             ntop.Add(statusBar);
             ntop.StatusBar = statusBar;
@@ -36,11 +36,21 @@ namespace resticterm.Views
             };
             ntop.Add(win);
 
-            Libs.ViewDesign.SetField(ntop, ref _repoPath, "Path to repository", Program.dataManager.config.RepoPath, 30, 3);
-            Libs.ViewDesign.SetField(ntop, ref _repoPassword, "Repository password", Program.dataManager.config.GetRepoPassword(), 30, 4);
-            Libs.ViewDesign.SetCheck(ntop, ref _useMasterPassword, "Use master password", Program.dataManager.config.UseMasterPassword, 30, 5);
-            Libs.ViewDesign.SetField(ntop, ref _restorePath, "Restore path", Program.dataManager.config.RestorePath, 30, 7);
-            Libs.ViewDesign.SetField(ntop, ref _sourcePath, "Backup Paths", Program.dataManager.config.SourcesBackupPath, 30, 7, 8);
+            var ms = new Label(message)
+            {
+                X = 1,
+                Y = 1,
+                Width = Dim.Fill(),
+                Height = 2,
+                ColorScheme = Colors.Error
+            };
+            ntop.Add(ms);
+
+            Libs.ViewDesign.SetField(ntop, ref _repoPath, "Path to repository", Program.dataManager.config.RepoPath, 30, 5);
+            Libs.ViewDesign.SetField(ntop, ref _repoPassword, "Repository password", Program.dataManager.config.GetRepoPassword(), 30, 6);
+            Libs.ViewDesign.SetCheck(ntop, ref _useMasterPassword, "Use master password", Program.dataManager.config.UseMasterPassword, 30, 7);
+            Libs.ViewDesign.SetField(ntop, ref _restorePath, "Restore path", Program.dataManager.config.RestorePath, 30, 9);
+            Libs.ViewDesign.SetField(ntop, ref _sourcePath, "Backup Paths", Program.dataManager.config.SourcesBackupPath, 30, 10, 5);
 
             //_sourcePath.
             _repoPassword.Secret = true;
@@ -59,5 +69,15 @@ namespace resticterm.Views
             Application.RequestStop();
         }
 
+        void Quit()
+		{
+            if (!String.IsNullOrWhiteSpace(Program.dataManager.config.EncryptedRepoPassword) && Program.dataManager.config.GetRepoPassword() == "")
+            {
+                if (MessageBox.ErrorQuery("Bad master password", "Bad master password ! \nIf you continue you must redefine repository password in setup.", "Continue", "Quit") != 0)
+                    Environment.Exit(-1);
+            }
+            Application.RequestStop();
+
+        }
     }
 }

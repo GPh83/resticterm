@@ -3,16 +3,13 @@
 ![platform](https://img.shields.io/badge/platform-Windows%20Linux-blue)
 ![commit](https://img.shields.io/github/last-commit/GPh83/resticterm) 
 ![issues](https://img.shields.io/bitbucket/issues-raw/GPh83/resticterm) 
-
-
   
 # resticterm
 
-resticterm is a multi-platform UI for restic backup software. (https://restic.net/)  
-It's a terminal user interface, strange for Windows but useful through SSH under Linux.
+resticterm is a multi-platform UI for restic backup software. (https://restic.net/).  
+It can be use alone for backup tools or with restic command line for manage repository.
 
 ![MainScreen](https://github.com/GPh83/resticterm/blob/master/resticterm/Img/0.2_Screen.png)
-
 
 ## Features
 - Manage local repository
@@ -21,10 +18,10 @@ It's a terminal user interface, strange for Windows but useful through SSH under
 - Restore partial or full snapshot
 - Settings for easy use
 - Based on repository informations for use with command line or UI
+- Master password for secure repository password
 
 ## Todo
 - SSH repository
-- Master password
 
 # Usage
 

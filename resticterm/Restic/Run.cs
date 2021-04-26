@@ -44,11 +44,11 @@ namespace resticterm.Restic
         /// </summary>
         /// <param name="command">Restic command and command parameters</param>
         /// <returns>Command console output </returns>
-        public String Start(String command, int TimeOut = -1)
+        public String Start(String command, int TimeOut = -1, String stdin = "")
         {
             var p = new Process();
             var psi = new ProcessStartInfo();
-            String ret,err;
+            String ret, err;
 
             // Select binary
             psi.WorkingDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Restic");
@@ -62,6 +62,10 @@ namespace resticterm.Restic
             }
             psi.RedirectStandardOutput = true;
             psi.RedirectStandardError = true;
+            if(String.IsNullOrEmpty(stdin))
+            {
+                psi.RedirectStandardInput = true;
+            }
             psi.UseShellExecute = false;
             // Password
             var pwd = Libs.Cryptography.Decrypt(EncryptedPassword, Program.dataManager.config.MasterPassword);
@@ -78,7 +82,11 @@ namespace resticterm.Restic
                 // Execute
                 p.StartInfo = psi;
                 p.Start();
-                p.WaitForExit(TimeOut);
+                if (String.IsNullOrEmpty(stdin))
+                {
+                    p.StandardInput.WriteLine(stdin);
+                }
+                 p.WaitForExit(TimeOut);
 
                 ret = p.StandardOutput.ReadToEnd();
                 err = p.StandardError.ReadToEnd();

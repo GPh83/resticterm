@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -36,6 +37,42 @@ namespace resticterm.Models
         {
             EncryptedRepoPassword = Libs.Cryptography.Encrypt(uncryptedPassword, MasterPassword);
         }
+
+
+        internal String CheckValidity()
+        {
+            String ret = "";
+
+            if (String.IsNullOrWhiteSpace(Program.dataManager.config.RepoPath))
+                ret += "Repository path not define !\n";
+
+            if (String.IsNullOrWhiteSpace(Program.dataManager.config.EncryptedRepoPassword))
+            {
+                ret += "Repository password not define !\n";
+            }
+            else
+            {
+                if(Program.dataManager.config.GetRepoPassword()=="")
+                    ret += "Invalid master password !\n";
+            }
+
+            if(ret=="")
+            {
+                if(!Directory.Exists(Program.dataManager.config.RepoPath))
+                {
+                    try
+                    {
+                        Directory.CreateDirectory(Program.dataManager.config.RepoPath);
+                    }
+                    catch (Exception)
+                    {
+                        ret += "Can't create Repository !\n";
+                    }
+                }
+            }
+            return ret;
+        }
+
 
     }
 }
