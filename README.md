@@ -31,7 +31,7 @@ Download release, extract and run : resticterm.exe (Windows or Linux)
 # Contributing
 
 **resticterm** is written in C# with .NET 5  
-Based in this very good software : https://github.com/restic/restic  
+Based on this very good software : https://github.com/restic/restic  
 Console UI is Terminal.Gui - Terminal GUI toolkit for .NET : https://github.com/migueldeicaza/gui.cs  
 Made with VS2019 Community.
 
