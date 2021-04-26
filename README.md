@@ -2,7 +2,7 @@
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
 ![platform](https://img.shields.io/badge/platform-Windows%20Linux-blue)
 ![commit](https://img.shields.io/github/last-commit/GPh83/resticterm) 
-![issues](https://img.shields.io/bitbucket/issues-raw/GPh83/resticterm) 
+![issues](https://img.shields.io/github/issues/GPh83/resticterm) 
 ![doawnloads](https://img.shields.io/github/downloads/GPh83/resticterm/total)
 
 # resticterm
