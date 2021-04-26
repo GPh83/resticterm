@@ -1,5 +1,5 @@
 
-[release](https://img.shields.io/github/v/release/GPh83/resticterm?include_prereleases)
+![release](https://img.shields.io/github/v/release/GPh83/resticterm?include_prereleases)
 ![commit](https://img.shields.io/github/last-commit/GPh83/resticterm) 
 ![issues](https://img.shields.io/github/issues/GPh83/resticterm) 
 ![downloads](https://img.shields.io/github/downloads/GPh83/resticterm/total)
