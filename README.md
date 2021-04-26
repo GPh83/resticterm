@@ -13,6 +13,10 @@ It can be use alone for backup tools or with restic command line for manage repo
 
 ![MainScreen](https://github.com/GPh83/resticterm/blob/master/resticterm/Img/0.2_Screen.png)
 
+## Wiki 
+
+https://github.com/GPh83/resticterm/wiki
+
 ## Features
 - Manage local repository
 - Backup multi sources 
