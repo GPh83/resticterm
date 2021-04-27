@@ -16,6 +16,7 @@ namespace resticterm.Views
         {
             var ntop = new Toplevel();
 
+            // Menu
             var statusBar = new StatusBar(new StatusItem[] {
                 new StatusItem(Key.F1, "~F1~ Check repository", CheckRepo),
                 new StatusItem(Key.F2, "~F2~ Purge repository", PurgeRepo),
@@ -36,16 +37,35 @@ namespace resticterm.Views
             };
             ntop.Add(win);
 
+            // Scroll
+            var rect = Application.Top.Frame;
+            rect.Width -= 2;
+            rect.Height -= 2;
+            rect.X = 0;
+            rect.Y = 0;
+            var scrollView = new ScrollView(rect)
+            {                
+                AutoHideScrollBars = false,
+                ShowHorizontalScrollIndicator = false,
+                ShowVerticalScrollIndicator = true,
+                ContentSize = new Size(rect.Width, 1000)
+            };
+            win.Add(scrollView);
+
             // Information
             info = new Label()
             {
                 X = 0,
                 Y = 0,
                 Width = Dim.Fill(),
-                Height = Dim.Fill() - 2
+                Height = Dim.Fill()
             };
-            info.Text = "";
-            win.Add(info);
+            var ms= "Check : Check the repository for errors\n";
+            ms += "Purge : Remove snapshots from the repository and remove unneeded data from the repository\n";
+            ms += "Create : Initialize a new repository\n";
+            ms += "Unlock : Unlock locks other processes created\n";
+            info.Text=ms.Replace("\r","");
+            scrollView.Add(info);
 
             Application.Run(ntop);
 
@@ -62,7 +82,7 @@ namespace resticterm.Views
         void CreateRepo()
         {
             info.Text = Program.restic.Create();
-            
+
         }
         void UnlockRepo()
         {
