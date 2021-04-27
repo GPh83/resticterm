@@ -39,7 +39,7 @@ namespace resticterm.Views
             {
                 X = 0,
                 Y = 0,
-                Width = Dim.Fill() ,
+                Width = Dim.Fill(),
                 Height = 1,
                 TextAlignment = TextAlignment.Centered
             };
@@ -64,22 +64,28 @@ namespace resticterm.Views
         void Quit()
         {
             tv.CellActivated -= onCellActivated;
-            Application.RequestStop(); 
+            Application.RequestStop();
         }
 
 
         void onCellActivated(CellActivatedEventArgs cellEvt)
         {
-            var id = cellEvt.Table.Rows[cellEvt.Row][0];
-            var files = new Views.UI_Files();
-            files.ShowModal(id.ToString());
+            if (cellEvt.Row >= 0)
+            {
+                var id = cellEvt.Table.Rows[cellEvt.Row][0];
+                var files = new Views.UI_Files();
+                files.ShowModal(id.ToString());
+            }
         }
 
         void onSelect()
         {
-            var id = tv.Table.Rows[tv.SelectedRow][0];
-            var files = new Views.UI_Files();
-            files.ShowModal(id.ToString());
+            if (tv.SelectedRow >= 0)
+            {
+                var id = tv.Table.Rows[tv.SelectedRow][0];
+                var files = new Views.UI_Files();
+                files.ShowModal(id.ToString());
+            }
         }
 
 
@@ -93,7 +99,7 @@ namespace resticterm.Views
             dt.Columns.Add("Hostname");
             dt.Columns.Add("Path");
 
-            foreach(Models.SnapshotItem s in snapshots)
+            foreach (Models.SnapshotItem s in snapshots)
             {
                 var dr = dt.NewRow();
                 dr["ID"] = s.short_id;

@@ -121,9 +121,18 @@ namespace resticterm.Restic
         public List<Models.SnapshotItem> GetSnapshots(String id = "")
         {
             String rep;
+            List<Models.SnapshotItem> snapshots;
 
             rep = Run.RemoveESC(_run.Start("snapshots " + id + " --json"));
-            var snapshots = JsonSerializer.Deserialize<List<Models.SnapshotItem>>(rep);
+            if (rep.StartsWith('['))
+            {
+                snapshots = JsonSerializer.Deserialize<List<Models.SnapshotItem>>(rep);
+            }
+            else
+            {
+                // If error, return empty
+                snapshots = new List<Models.SnapshotItem>();
+            }
             return snapshots;
         }
 
@@ -161,10 +170,17 @@ namespace resticterm.Restic
             String rep;
 
             var uncryptedPassword = Program.dataManager.config.GetRepoPassword();
-            rep = Run.RemoveESC(_run.Start("init",-1, uncryptedPassword + "\n"+ uncryptedPassword));
+            rep = Run.RemoveESC(_run.Start("init", -1, uncryptedPassword + "\n" + uncryptedPassword));
             return rep.Replace("\r", "");
         }
 
+        public String Purge()
+        {
+            String rep;
+            //forget--keep - last 1--prune
+            rep = Run.RemoveESC(_run.Start("forget --keep-last " + Program.dataManager.config.KeepLastSnapshots.ToString() + " --prune"));
+            return rep.Replace("\r", "");
+        }
 
         #region "Private"
 

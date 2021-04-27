@@ -13,6 +13,7 @@ namespace resticterm.Views
         TextField _repoPassword;
         TextField _restorePath;
         TextView _sourcePath;
+        TextField _keepLast;
         CheckBox _useMasterPassword;
 
         public void ShowModal(String message)
@@ -50,7 +51,8 @@ namespace resticterm.Views
             Libs.ViewDesign.SetField(ntop, ref _repoPassword, "Repository password", Program.dataManager.config.GetRepoPassword(), 30, 6);
             Libs.ViewDesign.SetCheck(ntop, ref _useMasterPassword, "Use master password", Program.dataManager.config.UseMasterPassword, 30, 7);
             Libs.ViewDesign.SetField(ntop, ref _restorePath, "Restore path", Program.dataManager.config.RestorePath, 30, 9);
-            Libs.ViewDesign.SetField(ntop, ref _sourcePath, "Backup Paths", Program.dataManager.config.SourcesBackupPath, 30, 10, 5);
+            Libs.ViewDesign.SetField(ntop, ref _keepLast, "Purge, keep last", Program.dataManager.config.KeepLastSnapshots.ToString(), 30, 10);
+            Libs.ViewDesign.SetField(ntop, ref _sourcePath, "Backup Paths", Program.dataManager.config.SourcesBackupPath, 30, 11, 5);
 
             //_sourcePath.
             _repoPassword.Secret = true;
@@ -62,15 +64,16 @@ namespace resticterm.Views
         {
             Program.dataManager.config.RepoPath = _repoPath.Text.ToString();
             Program.dataManager.config.SetRepoPassword(_repoPassword.Text.ToString());
-            Program.dataManager.config.UseMasterPassword=_useMasterPassword.Checked;
+            Program.dataManager.config.UseMasterPassword = _useMasterPassword.Checked;
             Program.dataManager.config.RestorePath = _restorePath.Text.ToString();
+            Program.dataManager.config.KeepLastSnapshots = int.Parse(_keepLast.Text.ToString());
             Program.dataManager.config.SourcesBackupPath = _sourcePath.Text.ToString();
             Program.dataManager.SaveConfig();
             Application.RequestStop();
         }
 
         void Quit()
-		{
+        {
             if (!String.IsNullOrWhiteSpace(Program.dataManager.config.EncryptedRepoPassword) && Program.dataManager.config.GetRepoPassword() == "")
             {
                 if (MessageBox.ErrorQuery("Bad master password", "Bad master password ! \nIf you continue you must redefine repository password in setup.", "Continue", "Quit") != 0)

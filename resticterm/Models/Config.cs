@@ -25,6 +25,9 @@ namespace resticterm.Models
         [JsonInclude]
         public bool UseMasterPassword { get; set; } = false;
 
+        [JsonInclude]
+        public int KeepLastSnapshots { get; set; } = 60;
+
 
         internal String MasterPassword { get; set; } = String.Empty;
 

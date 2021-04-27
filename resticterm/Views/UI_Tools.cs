@@ -44,7 +44,7 @@ namespace resticterm.Views
             rect.X = 0;
             rect.Y = 0;
             var scrollView = new ScrollView(rect)
-            {                
+            {
                 AutoHideScrollBars = false,
                 ShowHorizontalScrollIndicator = false,
                 ShowVerticalScrollIndicator = true,
@@ -60,11 +60,11 @@ namespace resticterm.Views
                 Width = Dim.Fill(),
                 Height = Dim.Fill()
             };
-            var ms= "Check : Check the repository for errors\n";
-            ms += "Purge : Remove snapshots from the repository and remove unneeded data from the repository\n";
+            var ms = "Check : Check the repository for errors\n";
+            ms += "Purge : Remove snapshots from the repository and remove unneeded data from the repository. Keep last "+ Program.dataManager.config.KeepLastSnapshots.ToString()+ " snapshots\n";
             ms += "Create : Initialize a new repository\n";
             ms += "Unlock : Unlock locks other processes created\n";
-            info.Text=ms.Replace("\r","");
+            info.Text = ms.Replace("\r", "");
             scrollView.Add(info);
 
             Application.Run(ntop);
@@ -73,19 +73,23 @@ namespace resticterm.Views
 
         void CheckRepo()
         {
+            info.Text = "Check ...";
             info.Text = Program.restic.Check();
         }
         void PurgeRepo()
         {
-            Application.RequestStop();
+            info.Text = "Purge ...";
+            info.Text = Program.restic.Purge();
         }
         void CreateRepo()
         {
+            info.Text = "Create ...";
             info.Text = Program.restic.Create();
 
         }
         void UnlockRepo()
         {
+            info.Text = "Unlock ...";
             info.Text = Program.restic.Unlock();
         }
     }
