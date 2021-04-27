@@ -18,6 +18,7 @@ namespace resticterm.Views
     public class UI_Main
     {
         Label info;
+        StatusBar statusBar;
         Window win;
 
         public void Create()
@@ -44,7 +45,7 @@ namespace resticterm.Views
             };
             win.Add(info);
 
-            var statusBar = new StatusBar(new StatusItem[] {
+            statusBar = new StatusBar(new StatusItem[] {
                 new StatusItem(Key.F1, "~F1~ Backup", ShowBackup),
                 new StatusItem(Key.F2, "~F2~ Browse/Restore", ShowBrowser),
                 new StatusItem(Key.F3, "~F3~ Init/Tools", ShowTools),
@@ -63,60 +64,71 @@ namespace resticterm.Views
                 pwd.ShowModal();
             }
             DisplayRepoSummary();
-
         }
 
 
         void ShowSetup(String message = "")
         {
-            var setup = new Views.UI_Setup();
-            setup.ShowModal(message);
-            Program.restic = new Restic.Restic(Program.dataManager.config.RepoPath, Program.dataManager.config.EncryptedRepoPassword);
-            DisplayRepoSummary();
+            if (Application.Top.IsCurrentTop)
+            {
+                var setup = new Views.UI_Setup();
+                setup.ShowModal(message);
+                Program.restic = new Restic.Restic(Program.dataManager.config.RepoPath, Program.dataManager.config.EncryptedRepoPassword);
+                DisplayRepoSummary();
+            }
         }
 
         void ShowBrowser()
         {
-            var chk = Program.dataManager.config.CheckValidity();
-            if (chk == "")
+            if (Application.Top.IsCurrentTop)
             {
-                var info = new Views.UI_Browse();
-                info.ShowModal();
-                DisplayRepoSummary();
-            }
-            else
-            {
-                MessageBox.ErrorQuery("Error", "Invalid setup, use Setup !\n\n" + chk, "Ok");
+                var chk = Program.dataManager.config.CheckValidity();
+                if (chk == "")
+                {
+                    var info = new Views.UI_Browse();
+                    info.ShowModal();
+                    DisplayRepoSummary();
+                }
+                else
+                {
+                    MessageBox.ErrorQuery("Error", "Invalid setup, use Setup !\n\n" + chk, "Ok");
+                }
             }
         }
 
         void ShowBackup()
         {
-            var chk = Program.dataManager.config.CheckValidity();
-            if (chk == "")
+            if (Application.Top.IsCurrentTop)
             {
-                var bak = new Views.UI_Backup();
-                bak.ShowModal();
-                DisplayRepoSummary();
-            }
-            else
-            {
-                MessageBox.ErrorQuery("Error", "Invalid setup, use Setup !\n\n" + chk, "Ok");
+                var chk = Program.dataManager.config.CheckValidity();
+                if (chk == "")
+                {
+                    var bak = new Views.UI_Backup();
+                    bak.ShowModal();
+                    DisplayRepoSummary();
+                }
+                else
+                {
+                    MessageBox.ErrorQuery("Error", "Invalid setup, use Setup !\n\n" + chk, "Ok");
+                }
             }
         }
 
         void ShowTools()
         {
-            var chk = Program.dataManager.config.CheckValidity();
-            if (chk == "")
+            if (Application.Top.IsCurrentTop)
             {
-                var tools = new Views.UI_Tools();
-                tools.ShowModal();
-                DisplayRepoSummary();
-            }
-            else
-            {
-                MessageBox.ErrorQuery("Error", "Invalid setup, use Setup !\n\n"+chk, "Ok");
+                var chk = Program.dataManager.config.CheckValidity();
+                if (chk == "")
+                {
+                    var tools = new Views.UI_Tools();
+                    tools.ShowModal();
+                    DisplayRepoSummary();
+                }
+                else
+                {
+                    MessageBox.ErrorQuery("Error", "Invalid setup, use Setup !\n\n" + chk, "Ok");
+                }
             }
         }
 
@@ -134,7 +146,6 @@ namespace resticterm.Views
             }
             else
             {
-
                 var str = Program.restic.Summary();
                 str += "\n";
                 str += "resticterm Copyright(C) 2021 Philippe GRAILLE. This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions, see GNU GPL V3 : https://www.gnu.org/licenses/\n";
