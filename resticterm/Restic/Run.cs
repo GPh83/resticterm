@@ -43,6 +43,8 @@ namespace resticterm.Restic
         /// Execute a command and get result
         /// </summary>
         /// <param name="command">Restic command and command parameters</param>
+        /// <param name="TimeOut">Time out in ms for waiting command end. -1 for infinite</param>
+        /// <param name="stdin">String to send to input</param>
         /// <returns>Command console output </returns>
         public String Start(String command, int TimeOut = -1, String stdin = "")
         {
@@ -60,14 +62,17 @@ namespace resticterm.Restic
             {
                 psi.FileName = Path.Combine(psi.WorkingDirectory, "restic");
             }
+
+            // Start info
+            psi.UseShellExecute = false;
             psi.RedirectStandardOutput = true;
             psi.RedirectStandardError = true;
-            if(String.IsNullOrEmpty(stdin))
+            if (!String.IsNullOrEmpty(stdin))
             {
                 psi.RedirectStandardInput = true;
             }
-            psi.UseShellExecute = false;
-            // Password
+
+            // Password as environment variable
             var pwd = Libs.Cryptography.Decrypt(EncryptedPassword, Program.dataManager.config.MasterPassword);
             if (String.IsNullOrEmpty(pwd))
             {
@@ -82,15 +87,18 @@ namespace resticterm.Restic
                 // Execute
                 p.StartInfo = psi;
                 p.Start();
-                if (String.IsNullOrEmpty(stdin))
+                if (!String.IsNullOrEmpty(stdin))
                 {
                     p.StandardInput.WriteLine(stdin);
                 }
-                 p.WaitForExit(TimeOut);
 
-                ret = p.StandardOutput.ReadToEnd();
-                err = p.StandardError.ReadToEnd();
+                var output = p.StandardOutput.ReadToEndAsync();
+                var error = p.StandardError.ReadToEndAsync();
+                
+                p.WaitForExit(TimeOut);
 
+                ret = output.Result;
+                err = error.Result;
                 if (!String.IsNullOrWhiteSpace(err)) ret += "\n" + err;
                 p.Close();
             }

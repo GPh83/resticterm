@@ -122,7 +122,7 @@ namespace resticterm.Restic
         {
             String rep;
 
-            rep = Run.RemoveESC(_run.Start("snapshots " + id + " --json", 2000));
+            rep = Run.RemoveESC(_run.Start("snapshots " + id + " --json"));
             var snapshots = JsonSerializer.Deserialize<List<Models.SnapshotItem>>(rep);
             return snapshots;
         }
@@ -131,7 +131,7 @@ namespace resticterm.Restic
         {
             String rep;
 
-            rep = Run.RemoveESC(_run.Start("ls " + id + " --json", 2000));
+            rep = Run.RemoveESC(_run.Start("ls " + id + " --json"));
             // TODO : Improve this conversion
             rep = RemoveFirstLines(rep, 1).Replace("\n", ",").Replace("\r", "");
             if (rep.EndsWith(",")) rep = rep.Substring(0, rep.Length - 1);
