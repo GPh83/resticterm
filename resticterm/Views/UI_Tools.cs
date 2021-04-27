@@ -11,10 +11,11 @@ namespace resticterm.Views
     {
 
         Label info;
+        Toplevel ntop;
 
         public void ShowModal()
         {
-            var ntop = new Toplevel();
+            ntop = new Toplevel();
 
             // Menu
             var statusBar = new StatusBar(new StatusItem[] {
@@ -26,7 +27,7 @@ namespace resticterm.Views
             });
             ntop.Add(statusBar);
             ntop.StatusBar = statusBar;
-
+            
             // Windows
             var win = new Window("Tools")
             {
@@ -73,24 +74,32 @@ namespace resticterm.Views
 
         void CheckRepo()
         {
-            info.Text = "Check ...";
+            DisplayInfo("Check ...");
             info.Text = Program.restic.Check();
         }
         void PurgeRepo()
         {
-            info.Text = "Purge ...";
+            DisplayInfo("Purge ...");
             info.Text = Program.restic.Purge();
         }
         void CreateRepo()
         {
-            info.Text = "Create ...";
+            DisplayInfo("Create ...");
             info.Text = Program.restic.Create();
 
         }
         void UnlockRepo()
         {
-            info.Text = "Unlock ...";
+            DisplayInfo("Unlock ...");
             info.Text = Program.restic.Unlock();
         }
+
+        void DisplayInfo(String message)
+        {
+            info.Text = message;
+            ntop.Redraw(info.Bounds);
+            Application.Refresh();
+        }
+
     }
 }
