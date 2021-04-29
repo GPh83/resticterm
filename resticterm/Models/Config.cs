@@ -47,11 +47,11 @@ namespace resticterm.Models
             String ret = "";
 
             if (String.IsNullOrWhiteSpace(Program.dataManager.config.RepoPath))
-                ret += "Repository path not define !\n";
+                ret += "Repository path not defined !\n";
 
             if (String.IsNullOrWhiteSpace(Program.dataManager.config.EncryptedRepoPassword))
             {
-                ret += "Repository password not define !\n";
+                ret += "Repository password not defined !\n";
             }
             else
             {

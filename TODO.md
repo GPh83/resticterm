@@ -1,9 +1,12 @@
 
 
 # To do
-- Purge
+- ~~Purge~~
 - Add use of SSH repository
 - Wiki documentation
+- Filter in snapshot details
+- Replace SaveDialog by Treeview in restore
+- Add information when restoring
      
 # Ideas 
 
@@ -11,3 +14,4 @@
 - Create planned backup 
     - cron on linux
     - Task scheduler on Windows
+- Selectable config

@@ -33,7 +33,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Terminal.Gui" Version="1.0.0-rc.1" />
+    <PackageReference Include="Terminal.Gui" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>

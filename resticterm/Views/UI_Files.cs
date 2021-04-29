@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terminal.Gui;
+using static Terminal.Gui.TableView;
 
 namespace resticterm.Views
 {
@@ -78,22 +79,27 @@ namespace resticterm.Views
         {
             var filenameToRestore = tv.Table.Rows[tv.SelectedRow][1];
             var saveDialog = new SaveDialog("Restore file(s)", "Choose directory where to restore file(s)");
+            saveDialog.NameFieldLabel = "";
 
-            saveDialog.DirectoryPath = Path.Combine(Program.dataManager.config.RestorePath,"restore_"+DateTime.Now.ToString("yyyyMMdd"));
+            saveDialog.DirectoryPath = Path.Combine(Program.dataManager.config.RestorePath, "restore_" + DateTime.Now.ToString("yyyyMMdd"));
             saveDialog.Prompt = "Restore";
-            
+
             Application.Run(saveDialog);
             if (saveDialog.FileName != null)
             {
-                var command = "restore " + currentSnapshotId;
+                var command = "restore ";
                 command += " --target \"" + saveDialog.FilePath.ToString() + "\"";
                 command += " --include \"" + filenameToRestore + "\"";
+                command += " -v";
+                command += " " +currentSnapshotId;
+
                 //var command = "dump " + currentSnapshotId;
                 //command += " \"" +filenameToRestore+ "\"";
                 //command += " --archive \"zip\"";
                 ////command += " > " + Path.Combine(saveDialog.FilePath.ToString(), saveDialog.FileName.ToString());
-
-                var ret = Program.restic._run.Start(command, 5000);
+                
+                // TODO : Event for each line 
+                var ret = Program.restic._run.Start(command);
                 MessageBox.Query("File save", ret, "Ok");
             }
         }
