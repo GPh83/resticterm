@@ -27,7 +27,7 @@ namespace resticterm.Models
             public string[] current_files { get; set; }
         }
 
-        
+
         /// <summary>
         /// Summary at backup end
         /// </summary>
@@ -48,6 +48,5 @@ namespace resticterm.Models
             public float total_duration { get; set; }
             public string snapshot_id { get; set; }
         }
-
     }
 }

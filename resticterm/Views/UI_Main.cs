@@ -146,6 +146,10 @@ namespace resticterm.Views
             }
             else
             {
+                info.Text = "Summary in progress ...";
+                Application.Top.Redraw(info.Bounds);
+                Application.Refresh();
+                
                 var str = Program.restic.Summary();
                 str += "\n";
                 str += "resticterm Copyright(C) 2021 Philippe GRAILLE. This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions, see GNU GPL V3 : https://www.gnu.org/licenses/\n";

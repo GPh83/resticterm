@@ -28,7 +28,6 @@ namespace resticterm.Models
         [JsonInclude]
         public int KeepLastSnapshots { get; set; } = 60;
 
-
         internal String MasterPassword { get; set; } = String.Empty;
 
         internal String GetRepoPassword()

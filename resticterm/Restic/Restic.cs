@@ -52,9 +52,9 @@ namespace resticterm.Restic
 
             ret = "\n";
 
-            ret += ">> Repository : " + _run.RepoPath + "\n";
+            ret += ">> Repository : " + _run._RepoPath + "\n";
             rep = _run.Start("stats");
-
+            
             var lines = rep.Split("\n");
             if (lines.Length > 3)
             {

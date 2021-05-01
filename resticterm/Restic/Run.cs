@@ -20,8 +20,8 @@ namespace resticterm.Restic
     public class Run
     {
 
-        internal String RepoPath { get; }
-        internal String EncryptedPassword { get; }
+        internal String _RepoPath { get; }
+        internal String _EncryptedPassword { get; }
 
 
         #region "Events"
@@ -35,8 +35,8 @@ namespace resticterm.Restic
 
         public Run(String repoPath, String encryptedPassword)
         {
-            RepoPath = repoPath;
-            EncryptedPassword = encryptedPassword;
+            _RepoPath = repoPath;
+            _EncryptedPassword = encryptedPassword;
         }
 
         /// <summary>
@@ -73,16 +73,16 @@ namespace resticterm.Restic
             }
 
             // Password as environment variable
-            var pwd = Libs.Cryptography.Decrypt(EncryptedPassword, Program.dataManager.config.MasterPassword);
+            var pwd = Libs.Cryptography.Decrypt(_EncryptedPassword, Program.dataManager.config.MasterPassword);
             if (String.IsNullOrEmpty(pwd))
             {
                 ret = "Invalid master password or password can't be empty !";
             }
             else
             {
-                psi.EnvironmentVariables.Add("RESTIC_PASSWORD", Libs.Cryptography.Decrypt(EncryptedPassword, Program.dataManager.config.MasterPassword));
+                psi.EnvironmentVariables.Add("RESTIC_PASSWORD", Libs.Cryptography.Decrypt(_EncryptedPassword, Program.dataManager.config.MasterPassword));
                 //psi.EnvironmentVariables.Add("RESTIC_REPOSITORY", "local:\"" + RepoPath + "\"");
-                psi.Arguments = command + " -r \"" + RepoPath + "\"";
+                psi.Arguments = command + " -r \"" + _RepoPath + "\"";
 
                 // Execute
                 p.StartInfo = psi;
@@ -91,14 +91,12 @@ namespace resticterm.Restic
                 {
                     p.StandardInput.WriteLine(stdin);
                 }
-
-                var output = p.StandardOutput.ReadToEndAsync();
-                var error = p.StandardError.ReadToEndAsync();
-                
+                var statusTask = p.StandardOutput.ReadToEndAsync();
+                var errorTask = p.StandardError.ReadToEndAsync();
                 p.WaitForExit(TimeOut);
 
-                ret = output.Result;
-                err = error.Result;
+                ret = statusTask.Result;
+                err = errorTask.Result;
                 if (!String.IsNullOrWhiteSpace(err)) ret += "\n" + err;
                 p.Close();
             }
@@ -112,6 +110,7 @@ namespace resticterm.Restic
         /// <param name="source">File or folder to backup</param>
         /// <param name="flags">optional flags for backup command</param>
         /// <returns>Summary of backup. If error, message_type = "error" and snapshot_id = "message"</returns>
+        /// <seealso cref="OnBackupStatus"/>
         public Summary StartBackup(String source, String flags = "")
         {
             var p = new Process();
@@ -131,31 +130,51 @@ namespace resticterm.Restic
             psi.RedirectStandardOutput = true;
             psi.RedirectStandardError = true;
             psi.UseShellExecute = false;
-            psi.EnvironmentVariables.Add("RESTIC_PASSWORD", Libs.Cryptography.Decrypt(EncryptedPassword, Program.dataManager.config.MasterPassword));
-            psi.Arguments = "backup " + flags + " \"" + source + "\" -r \"" + RepoPath + "\" --json";
+            psi.EnvironmentVariables.Add("RESTIC_PASSWORD", Libs.Cryptography.Decrypt(_EncryptedPassword, Program.dataManager.config.MasterPassword));
+            psi.Arguments = "backup " + flags + " \"" + source + "\" -r \"" + _RepoPath + "\" --json";
 
             p.StartInfo = psi;
             p.Start();
 
             // Running
-            String summary = "";
+            String summary = String.Empty;
+            var errorTask = p.StandardError.ReadLineAsync();
+            var statusTask = p.StandardOutput.ReadLineAsync();
             while (!p.HasExited)
             {
-                var line = p.StandardOutput.ReadLine();
-                if (line != null)
+                // Outpout
+                if (statusTask.IsCompleted)
                 {
-                    //Debug.WriteLine(ret);
-                    if (line.Contains("\"message_type\":\"status\""))
+                    var line = statusTask.Result;
+                    statusTask = p.StandardOutput.ReadLineAsync();
+                    if (!String.IsNullOrWhiteSpace(line))
                     {
-                        var status = JsonSerializer.Deserialize<Status>(RemoveESC(line));
-                        OnBackupStatus(status);
+                        if (line.Contains("\"message_type\":\"status\""))
+                        {
+                            var status = JsonSerializer.Deserialize<Status>(RemoveESC(line));
+                            OnBackupStatus(status);
+                        }
+                        else if (line.Contains("\"message_type\":\"summary\""))
+                        {
+                            summary = line;
+                        }
                     }
-                    else if (line.Contains("\"message_type\":\"summary\""))
+                }
+
+                // Error
+                if (errorTask.IsCompleted)
+                {
+                    var error = errorTask.Result;
+                    errorTask = p.StandardError.ReadLineAsync();
+                    if (!String.IsNullOrWhiteSpace(error))
                     {
-                        summary = line;
-                    }else if (line.Contains("returned error,"))
-                    {
-                        // TODO : Take in account error
+                        if (error.Contains("error,"))
+                        {
+                            if (Views.DialogBackupError.AskQuitOnError(error))
+                            {
+                                p.Kill(true);
+                            }
+                        }
                     }
                 }
             }
@@ -163,14 +182,17 @@ namespace resticterm.Restic
             // End
             if (p.ExitCode == 0)
             {
-                int maxRead = 50;
-                while (String.IsNullOrWhiteSpace(summary) && maxRead > 0)
-                {
-                    summary = p.StandardOutput.ReadLine();
-                    if (String.IsNullOrWhiteSpace(summary) || !summary.Contains("\"message_type\":\"summary\""))
-                        summary = "";
-                    maxRead--;
-                }
+                if (String.IsNullOrWhiteSpace(summary))
+                    summary = statusTask.Result;
+
+                //int maxRead = 50;
+                //while (String.IsNullOrWhiteSpace(summary) && maxRead > 0)
+                //{
+                //    summary = p.StandardOutput.ReadLine();
+                //    if (String.IsNullOrWhiteSpace(summary) || !summary.Contains("\"message_type\":\"summary\""))
+                //        summary = "";
+                //    maxRead--;
+                //}
 
                 if (!String.IsNullOrWhiteSpace(summary) && summary.Contains("\"message_type\":\"summary\""))
                     ret = JsonSerializer.Deserialize<Summary>(RemoveESC(summary));
@@ -179,7 +201,8 @@ namespace resticterm.Restic
             }
             else
             {
-                ret = new Summary { message_type = "error", snapshot_id = "ExitCode = " + p.ExitCode.ToString() + "\n" + p.StandardError.ReadToEnd() };
+                var error = errorTask.Result;
+                ret = new Summary { message_type = "error", snapshot_id = "ExitCode = " + p.ExitCode.ToString() + "\n" + error };
             }
             p.Close();
             p.Dispose();
