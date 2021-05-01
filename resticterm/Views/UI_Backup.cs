@@ -57,7 +57,7 @@ namespace resticterm.Views
                 X = 0,
                 Y = Pos.Bottom(header),
                 Width = Dim.Fill(),
-                Height = Dim.Fill() - 2
+                Height = Dim.Fill() - 3
             };
             info.Text = "";
             win.Add(info);
@@ -68,7 +68,7 @@ namespace resticterm.Views
                 X = 0,
                 Y = Pos.Bottom(info),
                 Width = Dim.Fill(),
-                Height = 1,
+                Height = 2,
                 TextAlignment = TextAlignment.Centered
             };
             win.Add(current);

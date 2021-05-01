@@ -153,6 +153,9 @@ namespace resticterm.Restic
                     else if (line.Contains("\"message_type\":\"summary\""))
                     {
                         summary = line;
+                    }else if (line.Contains("returned error,"))
+                    {
+                        // TODO : Take in account error
                     }
                 }
             }

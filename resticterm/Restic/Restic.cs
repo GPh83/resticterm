@@ -184,9 +184,18 @@ namespace resticterm.Restic
 
         #region "Private"
 
+
         private void BackupStatus(Status status)
         {
-            OnProgress("Files done : " + status.files_done.ToString(), status.percent_done);
+            String ms = String.Empty;
+
+            // Current files
+            if (status.current_files is not null && status.current_files.Length>0 )
+                ms += String.Join(" / ", status.current_files[0]) + "\n";
+            // File count and time
+            ms += "Files: " + status.files_done.ToString() + " / " + status.total_files.ToString();
+            ms += "  Time: " + FormatSeconds(status.seconds_elapsed) + " / " + FormatSeconds(status.seconds_remaining);
+            OnProgress(ms, status.percent_done);
         }
 
         public static string RemoveFirstLines(string text, int linesCount)
@@ -196,6 +205,12 @@ namespace resticterm.Restic
         }
 
         #endregion
+
+        private String FormatSeconds(long seconds)
+        {
+            TimeSpan time = TimeSpan.FromSeconds(seconds);
+            return time.ToString(@"hh\:mm\:ss");
+        }
 
     }
 }
