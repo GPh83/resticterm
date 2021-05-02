@@ -1,13 +1,13 @@
 
 
 # To do
-- ~~Purge~~
-- Add use of SSH repository
-- Wiki documentation
-- Filter in snapshot details
-- Replace SaveDialog by Treeview in restore
 - Add information when restoring
-     
+- Replace SaveDialog by Treeview in restore
+- Filter in snapshot details
+- Clipboard use
+- Wiki documentation
+- Add use of SSH repository
+
 # Ideas 
 
 - Export database and save it in repository (mssql, mysql)

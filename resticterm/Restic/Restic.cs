@@ -10,14 +10,12 @@ namespace resticterm.Restic
 {
     public delegate void ProgressHandler(String message, float percent);
 
-    // TODO : Make function for auto-update
-
     /// <summary>
     /// Manager for restic binary executable
     /// </summary>
     public class Restic
     {
-        public Run _run;        // TODO : Remove public (only for test)
+        Run _run;        
 
         #region "Events"
         /// <summary>
@@ -147,6 +145,23 @@ namespace resticterm.Restic
             rep = "[" + rep + "]";
             var files = JsonSerializer.Deserialize<List<Models.FileDetails>>(rep);
             return files;
+        }
+
+        public String Restore(String snapshotID, String filepath, String filenameToRestore)
+        {
+            var command = "restore ";
+            command += " --target \"" + filepath + "\"";
+            command += " --include \"" + filenameToRestore + "\"";
+            command += " -v";
+            command += " " + snapshotID;
+
+            //var command = "dump " + currentSnapshotId;
+            //command += " \"" +filenameToRestore+ "\"";
+            //command += " --archive \"zip\"";
+            ////command += " > " + Path.Combine(saveDialog.FilePath.ToString(), saveDialog.FileName.ToString());
+
+            // TODO : Event for each line 
+            return  Program.restic._run.Start(command);
         }
 
         public String Check()

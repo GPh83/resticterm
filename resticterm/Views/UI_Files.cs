@@ -67,14 +67,6 @@ namespace resticterm.Views
             FileSave();
         }
 
-
-        void FileView()
-        {
-            var fName = tv.Table.Rows[tv.SelectedRow][0];
-            var ret = Program.restic._run.Start("dump " + currentSnapshotId + " \"" + fName + "\"", 5000);
-            //info.Text += ret;
-        }
-
         void FileSave()
         {
             var filenameToRestore = tv.Table.Rows[tv.SelectedRow][1];
@@ -87,19 +79,7 @@ namespace resticterm.Views
             Application.Run(saveDialog);
             if (saveDialog.FileName != null)
             {
-                var command = "restore ";
-                command += " --target \"" + saveDialog.FilePath.ToString() + "\"";
-                command += " --include \"" + filenameToRestore + "\"";
-                command += " -v";
-                command += " " +currentSnapshotId;
-
-                //var command = "dump " + currentSnapshotId;
-                //command += " \"" +filenameToRestore+ "\"";
-                //command += " --archive \"zip\"";
-                ////command += " > " + Path.Combine(saveDialog.FilePath.ToString(), saveDialog.FileName.ToString());
-                
-                // TODO : Event for each line 
-                var ret = Program.restic._run.Start(command);
+                var ret = Program.restic.Restore(currentSnapshotId, saveDialog.FilePath.ToString(), saveDialog.FilePath.ToString());
                 MessageBox.Query("File save", ret, "Ok");
             }
         }

@@ -61,7 +61,7 @@ namespace resticterm.Views
                 Width = Dim.Fill(),
                 Height = Dim.Fill()
             };
-            var ms = "Check : Check the repository for errors\n";
+            var ms = "\nCheck : Check the repository for errors\n";
             ms += "Purge : Remove snapshots from the repository and remove unneeded data from the repository. Keep last "+ Program.dataManager.config.KeepLastSnapshots.ToString()+ " snapshots\n";
             ms += "Create : Initialize a new repository\n";
             ms += "Unlock : Unlock locks other processes created\n";
@@ -97,8 +97,7 @@ namespace resticterm.Views
         void DisplayInfo(String message)
         {
             info.Text = message;
-            ntop.Redraw(info.Bounds);
-            Application.Refresh();
+            Libs.ViewDesign.RefreshView(ntop, info);
         }
 
     }

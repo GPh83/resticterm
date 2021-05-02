@@ -147,8 +147,7 @@ namespace resticterm.Views
             else
             {
                 info.Text = "Summary in progress ...";
-                Application.Top.Redraw(info.Bounds);
-                Application.Refresh();
+                Libs.ViewDesign.RefreshView(Application.Top,info);
                 
                 var str = Program.restic.Summary();
                 str += "\n";

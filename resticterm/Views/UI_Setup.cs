@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -81,6 +82,12 @@ namespace resticterm.Views
             }
             Application.RequestStop();
 
+        }
+
+        void Paste()
+        {
+            //_restorePath.Text = Clipboard.Contents.
+            //Debug.WriteLine(Clipboard.Contents.ToString());
         }
     }
 }

@@ -79,5 +79,11 @@ namespace resticterm.Libs
             ntop.Add(f);
             checkBox = f;
         }
+
+        public static void RefreshView(Toplevel toplevel, View obj)
+        {
+            toplevel.Redraw(obj.Bounds);
+            Application.Refresh();
+        }
     }
 }
