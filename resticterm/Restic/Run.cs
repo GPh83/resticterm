@@ -131,7 +131,8 @@ namespace resticterm.Restic
             psi.RedirectStandardError = true;
             psi.UseShellExecute = false;
             psi.EnvironmentVariables.Add("RESTIC_PASSWORD", Libs.Cryptography.Decrypt(_EncryptedPassword, Program.dataManager.config.MasterPassword));
-            psi.Arguments = "backup " + flags + " \"" + source + "\" -r \"" + _RepoPath + "\" --json";
+            psi.Arguments = "backup " + flags + " \"" + source + "\" -r \"" + _RepoPath + "\" --json ";
+            if (Program.dataManager.config.UseVSS && OperatingSystem.IsWindows()) psi.Arguments += " --use-fs-snapshot ";
 
             p.StartInfo = psi;
             p.Start();

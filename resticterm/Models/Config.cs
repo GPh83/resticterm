@@ -28,6 +28,11 @@ namespace resticterm.Models
         [JsonInclude]
         public int KeepLastSnapshots { get; set; } = 60;
 
+        [JsonInclude]
+        public bool UseVSS { get; set; } = false;
+
+
+        // --use-fs-snapshot
         internal String MasterPassword { get; set; } = String.Empty;
 
         internal String GetRepoPassword()
@@ -54,13 +59,13 @@ namespace resticterm.Models
             }
             else
             {
-                if(Program.dataManager.config.GetRepoPassword()=="")
+                if (Program.dataManager.config.GetRepoPassword() == "")
                     ret += "Invalid master password !\n";
             }
 
-            if(ret=="")
+            if (ret == "")
             {
-                if(!Directory.Exists(Program.dataManager.config.RepoPath))
+                if (!Directory.Exists(Program.dataManager.config.RepoPath))
                 {
                     try
                     {
