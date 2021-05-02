@@ -27,7 +27,7 @@ https://github.com/GPh83/resticterm/wiki
 - Master password for secure repository password
 
 ## Todo
-- SSH repository
+[View ToDo](https://github.com/GPh83/resticterm/blob/master/TODO.md)
 
 # Usage
 
