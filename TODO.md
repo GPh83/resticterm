@@ -3,7 +3,7 @@
 # To do
 - Add information when restoring
 - Replace SaveDialog by Treeview in restore
-- Filter in snapshot details
+- ~~Filter in snapshot details~~
 - Clipboard use
 - Wiki documentation
 - Add use of SSH repository

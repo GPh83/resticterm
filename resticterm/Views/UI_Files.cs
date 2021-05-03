@@ -15,23 +15,26 @@ namespace resticterm.Views
     /// </summary>
     class UI_Files
     {
+        Toplevel ntop;
+        Window win;
         TableView tv;
         String currentSnapshotId;
 
         public void ShowModal(String snapshotId)
         {
             currentSnapshotId = snapshotId;
-            var ntop = new Toplevel();
+            ntop = new Toplevel();
 
             var statusBar = new StatusBar(new StatusItem[] {
-                new StatusItem(Key.Enter, "~Enter~ Save", FileSave),
+                new StatusItem(Key.Enter, "~Enter~ Restore", FileRestore),
+                new StatusItem(Key.F3, "~F3~ Filter", Filter),
                 new StatusItem(Key.Esc, "~Esc~ Return", Quit)
             });
             ntop.Add(statusBar);
             ntop.StatusBar = statusBar;
 
             // Windows
-            var win = new Window("Snapshot content")
+            win = new Window("Snapshot content")
             {
                 X = 0,
                 Y = 0,
@@ -64,10 +67,10 @@ namespace resticterm.Views
 
         void onCellActivated(CellActivatedEventArgs cellEvt)
         {
-            FileSave();
+            FileRestore();
         }
 
-        void FileSave()
+        void FileRestore()
         {
             var filenameToRestore = tv.Table.Rows[tv.SelectedRow][1];
             var saveDialog = new SaveDialog("Restore file(s)", "Choose directory where to restore file(s)");
@@ -84,7 +87,7 @@ namespace resticterm.Views
             }
         }
 
-        void ShowFiles(String snapshotId)
+        void ShowFiles(String snapshotId, String Filter = "")
         {
             var files = Program.restic.GetFilesFromSnapshots(snapshotId);
 
@@ -95,26 +98,45 @@ namespace resticterm.Views
 
             foreach (Models.FileDetails f in files)
             {
-                var dr = dt.NewRow();
-                switch (f.type)
+                if (String.IsNullOrWhiteSpace(Filter) || f.path.Contains(Filter))
                 {
-                    case "file":
-                        dr["T"] = "|";
-                        break;
+                    var dr = dt.NewRow();
+                    switch (f.type)
+                    {
+                        case "file":
+                            dr["T"] = "|";
+                            break;
 
-                    case "dir":
-                        dr["T"] = "+";
-                        break;
+                        case "dir":
+                            dr["T"] = "+";
+                            break;
 
-                    default:
-                        dr["T"] = "";
-                        break;
+                        default:
+                            dr["T"] = "";
+                            break;
+                    }
+                    dr["Path"] = f.path;
+                    dr["Modif. Time"] = f.mtime;
+                    dt.Rows.Add(dr);
                 }
-                dr["Path"] = f.path;
-                dr["Modif. Time"] = f.mtime;
-                dt.Rows.Add(dr);
             }
             tv.Table = dt;
+        }
+
+
+        void Filter()
+        {
+            var filter = InputBox.ShowModal("Filter", "Word to search :","","Show all path or file containing the text.\nCase sensitive.\nEmpty for all.");
+            if (filter != null)
+            {
+                ShowFiles(currentSnapshotId, filter);
+                if (filter == "")
+                    win.Title = "Snapshot content";
+                else
+                    win.Title = "Snapshot content  Filter=[" + filter + "]";
+                //Libs.ViewDesign.RefreshView(ntop, win);
+            }
+
         }
     }
 }
