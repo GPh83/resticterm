@@ -65,7 +65,7 @@ namespace resticterm.Models
 
             if (ret == "")
             {
-                if (!Directory.Exists(Program.dataManager.config.RepoPath))
+                if (!Program.dataManager.config.RepoPath.StartsWith("sftp:") && !Directory.Exists(Program.dataManager.config.RepoPath))
                 {
                     try
                     {

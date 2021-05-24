@@ -81,8 +81,8 @@ namespace resticterm.Restic
             else
             {
                 psi.EnvironmentVariables.Add("RESTIC_PASSWORD", Libs.Cryptography.Decrypt(_EncryptedPassword, Program.dataManager.config.MasterPassword));
-                //psi.EnvironmentVariables.Add("RESTIC_REPOSITORY", "local:\"" + RepoPath + "\"");
-                psi.Arguments = command + " -r \"" + _RepoPath + "\"";
+                //psi.EnvironmentVariables.Add("RESTIC_REPOSITORY", "\"" + _RepoPath + "\"");
+                psi.Arguments = command + GetRepo();
 
                 // Execute
                 p.StartInfo = psi;
@@ -131,7 +131,7 @@ namespace resticterm.Restic
             psi.RedirectStandardError = true;
             psi.UseShellExecute = false;
             psi.EnvironmentVariables.Add("RESTIC_PASSWORD", Libs.Cryptography.Decrypt(_EncryptedPassword, Program.dataManager.config.MasterPassword));
-            psi.Arguments = "backup " + flags + " \"" + source + "\" -r \"" + _RepoPath + "\" --json ";
+            psi.Arguments = "backup " + flags + " \"" + source + "\" " + GetRepo() + " --json ";
             if (Program.dataManager.config.UseVSS && OperatingSystem.IsWindows()) psi.Arguments += " --use-fs-snapshot ";
 
             p.StartInfo = psi;
@@ -220,5 +220,13 @@ namespace resticterm.Restic
         {
             return Regex.Replace(str, @"\e\[(\d+;)*(\d+)?[ABCDHJKfmsu]", "");
         }
+
+
+        private String GetRepo()
+        {
+            return " -r \"" + _RepoPath + "\"";
+        }
+
     }
+
 }
