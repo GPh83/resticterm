@@ -11,14 +11,14 @@
 resticterm is a multi-platform UI for restic backup software. (https://restic.net/).  
 It can be used alone for backup tools or with restic command line for manage repository.
 
-![MainScreen](https://github.com/GPh83/resticterm/blob/master/resticterm/Img/resticterm_screen.png)
+![MainScreen](https://github.com/GPh83/resticterm/blob/master/resticterm/Img/resticterm_screens.gif)
 
 ## Wiki 
 
 https://github.com/GPh83/resticterm/wiki
 
 ## Features
-- Manage local repository
+- Manage local or sftp repository
 - Backup multi sources 
 - Browse snapshots
 - Restore partial or full snapshot
