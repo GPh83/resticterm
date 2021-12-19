@@ -22,6 +22,7 @@ namespace resticterm.Views
             var statusBar = new StatusBar(new StatusItem[] {
                 new StatusItem(Key.Enter, "~Enter~ Enter", onSelect),
                 new StatusItem(Key.Esc, "~Esc~ Return", Quit)
+                //new StatusItem(Key.F8, "~F8~ Test", onTest)
             });
             ntop.Add(statusBar);
             ntop.StatusBar = statusBar;
@@ -110,6 +111,16 @@ namespace resticterm.Views
                 dt.Rows.Add(dr);
             }
             tv.Table = dt;
+        }
+
+        void onTest()
+        {
+            var dirDialog = new Views.DialogSelectDirectory();
+            string dir = dirDialog.ShowModal(Program.dataManager.config.RestorePath);
+            if ( !String.IsNullOrEmpty(dir))
+            {
+                MessageBox.Query("Dir",dir,"Close");
+            }
         }
     }
 }

@@ -46,10 +46,11 @@ namespace resticterm.Libs
 
             var f = new Label(caption) { X = 1, Y = y, TextAlignment = TextAlignment.Right, Width = xCol };
             ntop.Add(f);
+            f.ColorScheme = Colors.Base;
 
             textField = new TextField(text.Replace("\r", "")) { X = xCol + +2, Y = y, Width = Dim.Fill() - 1 };
             ntop.Add(textField);
-
+            textField.ColorScheme = Colors.Base;
         }
 
         /// <summary>
@@ -66,10 +67,11 @@ namespace resticterm.Libs
 
             var f = new Label(caption) { X = 1, Y = y, TextAlignment = TextAlignment.Right, Width = xCol };
             ntop.Add(f);
+            f.ColorScheme = Colors.Base;
 
             textField = new TextView() { X = xCol + +2, Y = y, Width = Dim.Fill() - 1, Text = text.Replace("\r", ""), Height = height, ColorScheme = Colors.Dialog };
             ntop.Add(textField);
-
+            //textField.ColorScheme = Colors.Base;
         }
 
         public static void SetCheck(Toplevel ntop, ref CheckBox checkBox, String caption, bool value, int xCol, int y)
@@ -78,6 +80,7 @@ namespace resticterm.Libs
             var f = new CheckBox(caption, value) { X = xCol + 2, Y = y };
             ntop.Add(f);
             checkBox = f;
+            checkBox.ColorScheme = Colors.Base;
         }
 
         public static void RefreshView(Toplevel toplevel, View obj)

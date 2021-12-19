@@ -364,3 +364,5 @@ FodyWeavers.xsd
 /.vscode
 /resticterm.code-workspace
 /resticterm/Img/ForGIF
+/resticterm/Restic/restic0.12
+/resticterm/Restic/restic0.12.exe

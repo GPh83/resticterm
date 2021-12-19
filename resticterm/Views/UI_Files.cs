@@ -72,18 +72,25 @@ namespace resticterm.Views
 
         void FileRestore()
         {
-            var filenameToRestore = tv.Table.Rows[tv.SelectedRow][1];
-            var saveDialog = new SaveDialog("Restore file(s)", "Choose directory where to restore file(s)");
-            saveDialog.NameFieldLabel = "";
+            //String SaveTo = Path.Combine(Program.dataManager.config.RestorePath, "restore_" + DateTime.Now.ToString("yyyyMMdd"));
+            //if (!Directory.Exists(SaveTo)) Directory.CreateDirectory(SaveTo);
 
-            saveDialog.DirectoryPath = Path.Combine(Program.dataManager.config.RestorePath, "restore_" + DateTime.Now.ToString("yyyyMMdd"));
-            saveDialog.Prompt = "Restore";
+            var filenameToRestore = tv.Table.Rows[tv.SelectedRow][1].ToString();
+            var openDialog = new OpenDialog("Restore file(s)", "Choose directory where to restore file(s)", null, OpenDialog.OpenMode.Directory);
+            openDialog.NameDirLabel = "Directory";
+            openDialog.NameFieldLabel = "Restore to folder";
+            openDialog.IsExtensionHidden = true;
+            openDialog.AllowedFileTypes = null;
+            openDialog.CanCreateDirectories = true;
+            openDialog.DirectoryPath = Path.GetDirectoryName(Program.dataManager.config.RestorePath.TrimEnd(Path.DirectorySeparatorChar));
+            openDialog.FilePath = Path.GetFileName(Program.dataManager.config.RestorePath.TrimEnd(Path.DirectorySeparatorChar));
+            openDialog.Prompt = "Restore";
 
-            Application.Run(saveDialog);
-            if (saveDialog.FileName != null)
+            Application.Run(openDialog);
+            if (!openDialog.Canceled)
             {
-                var ret = Program.restic.Restore(currentSnapshotId, saveDialog.FilePath.ToString(), saveDialog.FilePath.ToString());
-                MessageBox.Query("File save", ret, "Ok");
+                var ret = Program.restic.Restore(currentSnapshotId, openDialog.FilePaths[0].ToString(), filenameToRestore);
+                MessageBox.Query("File(s) save", ret, "Ok");
             }
         }
 
@@ -126,7 +133,7 @@ namespace resticterm.Views
 
         void Filter()
         {
-            var filter = InputBox.ShowModal("Filter", "Word to search :","","Show all path or file containing the text.\nCase sensitive.\nEmpty for all.");
+            var filter = InputBox.ShowModal("Filter", "Word to search :", "", "Show all path or file containing the text.\nCase sensitive.\nEmpty for all.");
             if (filter != null)
             {
                 ShowFiles(currentSnapshotId, filter);
