@@ -84,6 +84,7 @@ namespace resticterm.Views
                 Fraction = 1
             };
             win.Add(pBar);
+            pBar.Fraction = 0;
 
             Application.Run(ntop);
 

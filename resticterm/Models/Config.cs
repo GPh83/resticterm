@@ -65,7 +65,7 @@ namespace resticterm.Models
 
             if (ret == "")
             {
-                if (!Program.dataManager.config.RepoPath.StartsWith("sftp:") && !Directory.Exists(Program.dataManager.config.RepoPath))
+                if (IsLocalDir(Program.dataManager.config.RepoPath) && !Directory.Exists(Program.dataManager.config.RepoPath))
                 {
                     try
                     {
@@ -80,6 +80,20 @@ namespace resticterm.Models
             return ret;
         }
 
+        private bool IsLocalDir(String RepoPath)       
+        {
+            bool ret=true;
 
+            if (RepoPath.StartsWith("sftp:")) ret = false;
+            if (RepoPath.StartsWith("rest:")) ret = false;
+            if (RepoPath.StartsWith("s3:")) ret = false;
+            if (RepoPath.StartsWith("swift:")) ret = false;
+            if (RepoPath.StartsWith("b2:")) ret = false;
+            if (RepoPath.StartsWith("azure:")) ret = false;
+            if (RepoPath.StartsWith("gs:")) ret = false;
+            if (RepoPath.StartsWith("rclone:")) ret = false;
+
+            return ret;
+        }
     }
 }
