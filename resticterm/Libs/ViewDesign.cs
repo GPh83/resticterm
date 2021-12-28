@@ -35,21 +35,21 @@ namespace resticterm.Libs
         /// <summary>
         /// Design a field with label and text on same ligne
         /// </summary>
-        /// <param name="ntop">View</param>
+        /// <param name="ntop">Window</param>
         /// <param name="textField">Object to retrieve value</param>
         /// <param name="caption">Label of field</param>
         /// <param name="text">Initial value</param>
         /// <param name="xCol">X pos for column</param>
         /// <param name="y">Line</param>
-        public static void SetField(Toplevel ntop, ref TextField textField, String caption, String text, int xCol, int y)
+        public static void SetField(Window win, ref TextField textField, String caption, String text, int xCol, int y)
         {
 
             var f = new Label(caption) { X = 1, Y = y, TextAlignment = TextAlignment.Right, Width = xCol };
-            ntop.Add(f);
+            win.Add(f);
             f.ColorScheme = Colors.Base;
 
             textField = new TextField(text.Replace("\r", "")) { X = xCol + +2, Y = y, Width = Dim.Fill() - 1 };
-            ntop.Add(textField);
+            win.Add(textField);
             textField.ColorScheme = Colors.Base;
         }
 
@@ -62,23 +62,23 @@ namespace resticterm.Libs
         /// <param name="text">Initial value</param>
         /// <param name="xCol">X pos for column</param>
         /// <param name="y">Line</param>
-        public static void SetField(Toplevel ntop, ref TextView textField, String caption, String text, int xCol, int y, int height)
+        public static void SetField(Window win, ref TextView textField, String caption, String text, int xCol, int y, int height)
         {
 
             var f = new Label(caption) { X = 1, Y = y, TextAlignment = TextAlignment.Right, Width = xCol };
-            ntop.Add(f);
+            win.Add(f);
             f.ColorScheme = Colors.Base;
 
             textField = new TextView() { X = xCol + +2, Y = y, Width = Dim.Fill() - 1, Text = text.Replace("\r", ""), Height = height, ColorScheme = Colors.Dialog };
-            ntop.Add(textField);
+            win.Add(textField);
             //textField.ColorScheme = Colors.Base;
         }
 
-        public static void SetCheck(Toplevel ntop, ref CheckBox checkBox, String caption, bool value, int xCol, int y)
+        public static void SetCheck(Window win, ref CheckBox checkBox, String caption, bool value, int xCol, int y)
         {
 
             var f = new CheckBox(caption, value) { X = xCol + 2, Y = y };
-            ntop.Add(f);
+            win.Add(f);
             checkBox = f;
             checkBox.ColorScheme = Colors.Base;
         }

@@ -58,7 +58,7 @@ namespace resticterm.Restic
             {
                 ret += "    " + lines[2] + " \n";
                 ret += "    " + lines[3] + " \n";
-                ret += "    " + lines[4] + " \n";
+                if (lines.Length > 4) ret += "    " + lines[4] + " \n";
                 ret += "\n";
             }
             else

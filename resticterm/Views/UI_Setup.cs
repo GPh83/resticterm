@@ -10,6 +10,8 @@ namespace resticterm.Views
 {
     public class UI_Setup
     {
+        Toplevel ntop;
+        Window win;
         TextField _repoPath;
         TextField _repoPassword;
         TextField _restorePath;
@@ -20,7 +22,7 @@ namespace resticterm.Views
 
         public void ShowModal(String message)
         {
-            var ntop = new Toplevel();
+            ntop = new Toplevel();
 
             var statusBar = new StatusBar(new StatusItem[] {
                 new StatusItem(Key.F1, "~F1~ Save", SaveSetup),
@@ -30,7 +32,7 @@ namespace resticterm.Views
             ntop.StatusBar = statusBar;
 
             // Windows
-            var win = new Window("Setup")
+            win = new Window("Setup")
             {
                 X = 0,
                 Y = 0,
@@ -49,13 +51,13 @@ namespace resticterm.Views
             };
             ntop.Add(ms);
 
-            Libs.ViewDesign.SetField(ntop, ref _repoPath, "Path to repository", Program.dataManager.config.RepoPath, 30, 5);
-            Libs.ViewDesign.SetField(ntop, ref _repoPassword, "Repository password", Program.dataManager.config.GetRepoPassword(), 30, 6);
-            Libs.ViewDesign.SetCheck(ntop, ref _useMasterPassword, "Use master password", Program.dataManager.config.UseMasterPassword, 30, 7);
-            Libs.ViewDesign.SetCheck(ntop, ref _useVSS, "Windows Volume Shadow Copy (Admin mode needed)", Program.dataManager.config.UseVSS, 30, 8);
-            Libs.ViewDesign.SetField(ntop, ref _restorePath, "Restore path", Program.dataManager.config.RestorePath, 30, 10);
-            Libs.ViewDesign.SetField(ntop, ref _keepLast, "Purge, keep last", Program.dataManager.config.KeepLastSnapshots.ToString(), 30, 11);
-            Libs.ViewDesign.SetField(ntop, ref _sourcePath, "Backup Paths", Program.dataManager.config.SourcesBackupPath, 30, 13, 5);
+            Libs.ViewDesign.SetField(win, ref _repoPath, "Path to repository", Program.dataManager.config.RepoPath, 30, 5);
+            Libs.ViewDesign.SetField(win, ref _repoPassword, "Repository password", Program.dataManager.config.GetRepoPassword(), 30, 6);
+            Libs.ViewDesign.SetCheck(win, ref _useMasterPassword, "Use master password", Program.dataManager.config.UseMasterPassword, 30, 7);
+            Libs.ViewDesign.SetCheck(win, ref _useVSS, "Windows Volume Shadow Copy (Admin mode needed)", Program.dataManager.config.UseVSS, 30, 8);
+            Libs.ViewDesign.SetField(win, ref _restorePath, "Restore path", Program.dataManager.config.RestorePath, 30, 10);
+            Libs.ViewDesign.SetField(win, ref _keepLast, "Purge, keep last", Program.dataManager.config.KeepLastSnapshots.ToString(), 30, 11);
+            Libs.ViewDesign.SetField(win, ref _sourcePath, "Backup Paths", Program.dataManager.config.SourcesBackupPath, 30, 13, 5);
 
             //_sourcePath.
             _repoPassword.Secret = true;

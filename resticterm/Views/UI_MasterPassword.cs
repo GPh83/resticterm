@@ -43,7 +43,7 @@ namespace resticterm.Views
             };
             ntop.Add(info);
 
-            Libs.ViewDesign.SetField(ntop, ref _masterPassword, "Master password", "", 30, 6);
+            Libs.ViewDesign.SetField(win, ref _masterPassword, "Master password", "", 30, 6);
             _masterPassword.Secret = true;
             Application.Run(ntop);
 
