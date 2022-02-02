@@ -164,6 +164,14 @@ namespace resticterm.Restic
             return  Program.restic._run.Start(command);
         }
 
+        public String Remove(String snapshotID)
+        {
+            var command = "forget";
+            command += " " + snapshotID;
+            command += " -v";
+            return Program.restic._run.Start(command);
+        }
+
         public String Check()
         {
             String rep;
@@ -196,6 +204,15 @@ namespace resticterm.Restic
             rep = Run.RemoveESC(_run.Start("forget --keep-last " + Program.dataManager.config.KeepLastSnapshots.ToString() + " --prune"));
             return rep.Replace("\r", "");
         }
+
+        public String Prune()
+        {
+            String rep;
+            //forget--keep - last 1--prune
+            rep = "\n" + Run.RemoveESC(_run.Start("prune"));
+            return rep.Replace("\r", "");
+        }
+
 
         #region "Private"
 

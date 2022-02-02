@@ -5,7 +5,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <StartupObject>resticterm.Program</StartupObject>
     <ApplicationIcon>restictermico.ico</ApplicationIcon>
-    <Version>0.7.2</Version>
+    <Version>0.7.3</Version>
     <Authors>Philippe GRAILLE</Authors>
     <Company />
     <Description>multi-platform UI for restic backup software.
@@ -19,9 +19,9 @@
     <PackageReleaseNotes></PackageReleaseNotes>
     <SignAssembly>false</SignAssembly>
     <NoWin32Manifest>true</NoWin32Manifest>
-    <AssemblyVersion>0.7.2.0</AssemblyVersion>
+    <AssemblyVersion>0.7.3.0</AssemblyVersion>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <FileVersion>0.7.2.0</FileVersion>
+    <FileVersion>0.7.3.0</FileVersion>
 
     <!-- <PublishSingleFile>true</PublishSingleFile>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
@@ -37,6 +37,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Restic\rclone">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Restic\rclone.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Restic\restic">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

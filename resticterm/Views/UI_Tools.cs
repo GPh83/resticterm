@@ -77,11 +77,14 @@ namespace resticterm.Views
             DisplayInfo("Check ...");
             info.Text = Program.restic.Check();
         }
+
         void PurgeRepo()
         {
             DisplayInfo("Purge ...");
-            info.Text = Program.restic.Purge();
+            DisplayInfo(Program.restic.Purge());
+            AddInfo( Program.restic.Prune());
         }
+
         void CreateRepo()
         {
             DisplayInfo("Create ...");
@@ -97,6 +100,12 @@ namespace resticterm.Views
         void DisplayInfo(String message)
         {
             info.Text = message;
+            Libs.ViewDesign.RefreshView(ntop, info);
+        }
+
+        void AddInfo(String message)
+        {
+            info.Text += "\n" + message + "\n";
             Libs.ViewDesign.RefreshView(ntop, info);
         }
 

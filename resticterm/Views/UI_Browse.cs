@@ -21,6 +21,7 @@ namespace resticterm.Views
 
             var statusBar = new StatusBar(new StatusItem[] {
                 new StatusItem(Key.Enter, "~Enter~ Enter", onSelect),
+                new StatusItem(Key.DeleteChar, "~Del~ Remove", onRemove),
                 new StatusItem(Key.Esc, "~Esc~ Return", Quit)
                 //new StatusItem(Key.F8, "~F8~ Test", onTest)
             });
@@ -90,6 +91,21 @@ namespace resticterm.Views
             }
         }
 
+        void onRemove()
+        {
+            if (tv.SelectedRow >= 0)
+            {
+                var rep = MessageBox.Query("Remove confirm", "Are you sure you want to delete this snapshoot?", "Yes", "No");
+                if (rep == 0)
+                {
+                    var id = tv.Table.Rows[tv.SelectedRow][0].ToString();
+
+                    var ret = Program.restic.Remove(id);
+                    MessageBox.Query("Remove " + id, ret, "Ok");
+                    ShowSnapshots();
+                }
+            }
+        }
 
         void ShowSnapshots()
         {
