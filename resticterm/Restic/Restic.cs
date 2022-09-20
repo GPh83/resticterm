@@ -118,6 +118,9 @@ namespace resticterm.Restic
 
                 }
             }
+            OnProgress("End" , 100);
+            OnProgress("End", -1);
+
             _run.BackupStatus -= BackupStatus;
         }
 
