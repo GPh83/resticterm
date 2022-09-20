@@ -80,7 +80,7 @@ namespace resticterm.Models
             return ret;
         }
 
-        private bool IsLocalDir(String RepoPath)       
+        public bool IsLocalDir(String RepoPath)       
         {
             bool ret=true;
 

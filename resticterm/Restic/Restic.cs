@@ -1,4 +1,5 @@
-﻿using System;
+﻿using resticterm.Libs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,7 @@ namespace resticterm.Restic
     /// </summary>
     public class Restic
     {
-        Run _run;        
+        Run _run;
 
         #region "Events"
         /// <summary>
@@ -52,19 +53,23 @@ namespace resticterm.Restic
 
             ret += ">> Repository : " + _run._RepoPath + "\n";
             rep = _run.Start("stats");
-            
+
             var lines = rep.Split("\n");
             if (lines.Length > 3)
             {
                 ret += "    " + lines[2] + " \n";
                 ret += "    " + lines[3] + " \n";
                 if (lines.Length > 4) ret += "    " + lines[4] + " \n";
-                ret += "\n";
             }
             else
             {
-                ret = rep + "\n" + "\n";
+                ret = rep + "\n";
             }
+            if (Program.dataManager.config.IsLocalDir(_run._RepoPath))
+            {
+                ret += "Repository disk space : " + DirectoryTools.BytesToHumanString(DirectoryTools.DirSize(_run._RepoPath)) + "\n";
+            }
+            ret += "\n";
 
             ret += ">> Last backup :\n";
             rep = _run.Start("snapshots latest");
@@ -161,7 +166,7 @@ namespace resticterm.Restic
             ////command += " > " + Path.Combine(saveDialog.FilePath.ToString(), saveDialog.FileName.ToString());
 
             // TODO : Event for each line 
-            return  Program.restic._run.Start(command);
+            return Program.restic._run.Start(command);
         }
 
         public String Remove(String snapshotID)
@@ -222,7 +227,7 @@ namespace resticterm.Restic
             String ms = String.Empty;
 
             // Current files
-            if (status.current_files is not null && status.current_files.Length>0 )
+            if (status.current_files is not null && status.current_files.Length > 0)
                 ms += String.Join(" / ", status.current_files[0]) + "\n";
             // File count and time
             ms += "Files: " + status.files_done.ToString() + " / " + status.total_files.ToString();
