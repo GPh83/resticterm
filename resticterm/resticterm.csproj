@@ -33,6 +33,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Restic\restic0.12" />
+    <None Remove="Restic\restic0.12.1" />
+    <None Remove="Restic\restic0.12.1.exe" />
+    <None Remove="Restic\restic0.12.exe" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Terminal.Gui" Version="1.4.0" />
   </ItemGroup>
 

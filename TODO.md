@@ -4,8 +4,9 @@
 
 - Selectable config
 - Replace SaveDialog by Treeview for directories
-- For local repo, show real used space
+- ~~For local repo, show real used space~~
 - Wiki documentation
+- Add repo migration to V2 for using compression
 
 ## Delayed
 - Add information when restoring (restic didn't give information for now)
