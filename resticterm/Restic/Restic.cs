@@ -1,4 +1,5 @@
 ﻿using resticterm.Libs;
+using resticterm.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,6 +53,9 @@ namespace resticterm.Restic
             ret = "\n";
 
             ret += ">> Repository : " + _run._RepoPath + "\n";
+
+            ret += "    Version : " + GetVersion().ToString() + "\n";
+
             rep = _run.Start("stats");
 
             var lines = rep.Split("\n");
@@ -118,7 +122,7 @@ namespace resticterm.Restic
 
                 }
             }
-            OnProgress("End" , 100);
+            OnProgress("End", 100);
             OnProgress("End", -1);
 
             _run.BackupStatus -= BackupStatus;
@@ -221,6 +225,26 @@ namespace resticterm.Restic
             return rep.Replace("\r", "");
         }
 
+        public String UpgradeV2()
+        {
+            String rep;
+            var uncryptedPassword = Program.dataManager.config.GetRepoPassword();
+
+            rep = "\n" + Run.RemoveESC(_run.Start("migrate upgrade_repo_v2", -1, uncryptedPassword + "\n" + uncryptedPassword));
+            return rep.Replace("\r", "");
+        }
+
+
+        public int GetVersion()
+        {
+            String rep;
+            CatConfig ver;
+
+            rep = Run.RemoveESC(_run.Start("cat config"));
+            ver = JsonSerializer.Deserialize<Models.CatConfig>(rep);
+
+            return ver.version;
+        }
 
         #region "Private"
 

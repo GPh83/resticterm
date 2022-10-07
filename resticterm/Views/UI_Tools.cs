@@ -19,10 +19,11 @@ namespace resticterm.Views
 
             // Menu
             var statusBar = new StatusBar(new StatusItem[] {
-                new StatusItem(Key.F1, "~F1~ Check repository", CheckRepo),
-                new StatusItem(Key.F2, "~F2~ Purge repository", PurgeRepo),
-                new StatusItem(Key.F3, "~F3~ Create repository", CreateRepo),
-                new StatusItem(Key.F4, "~F4~ Unlock repository", UnlockRepo),
+                new StatusItem(Key.F1, "~F1~ Check repo", CheckRepo),
+                new StatusItem(Key.F2, "~F2~ Purge repo", PurgeRepo),
+                new StatusItem(Key.F3, "~F3~ Create repo", CreateRepo),
+                new StatusItem(Key.F4, "~F4~ Unlock repo", UnlockRepo),
+                new StatusItem(Key.F5, "~F5~ Upgrade repo to V2", UpgradeRepo),
                 new StatusItem(Key.Esc, "~Esc~ Return", () => { Application.RequestStop(); })
             });
             ntop.Add(statusBar);
@@ -65,6 +66,7 @@ namespace resticterm.Views
             ms += "Purge : Remove snapshots from the repository and remove unneeded data from the repository. Keep last "+ Program.dataManager.config.KeepLastSnapshots.ToString()+ " snapshots\n";
             ms += "Create : Initialize a new repository\n";
             ms += "Unlock : Unlock locks other processes created\n";
+            ms += "Upgrade : Upgrade repository to V2 (for compression)\n";
             info.Text = ms.Replace("\r", "");
             scrollView.Add(info);
 
@@ -97,6 +99,11 @@ namespace resticterm.Views
             info.Text = Program.restic.Unlock();
         }
 
+        void UpgradeRepo()
+        {
+            DisplayInfo("Upgrading to repository version 2 ...");
+            info.Text = Program.restic.UpgradeV2();
+        }
         void DisplayInfo(String message)
         {
             info.Text = message;

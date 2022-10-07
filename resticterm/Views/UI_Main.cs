@@ -151,7 +151,7 @@ namespace resticterm.Views
                 
                 var str = Program.restic.Summary();
                 str += "\n";
-                str += "resticterm Copyright(C) 2021 Philippe GRAILLE. This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions, see GNU GPL V3 : https://www.gnu.org/licenses/\n";
+                str += "resticterm Copyright(C) 2021-2022 Philippe GRAILLE. This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions, see GNU GPL V3 : https://www.gnu.org/licenses/\n";
                 str += "GitHub : https://github.com/GPh83/resticterm/\n";
                 info.Text = str.Replace("\r", "");
                 Application.Refresh();

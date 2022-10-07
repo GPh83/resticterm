@@ -91,6 +91,7 @@ namespace resticterm.Restic
                 {
                     p.StandardInput.WriteLine(stdin);
                 }
+                
                 var statusTask = p.StandardOutput.ReadToEndAsync();
                 var errorTask = p.StandardError.ReadToEndAsync();
                 p.WaitForExit(TimeOut);
