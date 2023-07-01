@@ -22,6 +22,7 @@
     <AssemblyVersion>0.8.0.0</AssemblyVersion>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <FileVersion>0.8.0.0</FileVersion>
+    <PlatformTarget>x64</PlatformTarget>
 
     <!-- <PublishSingleFile>true</PublishSingleFile>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
