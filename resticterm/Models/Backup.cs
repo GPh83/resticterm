@@ -17,8 +17,8 @@ namespace resticterm.Models
         public class Status
         {
             public string message_type { get; set; }
-            public long seconds_elapsed { get; set; }
-            public long seconds_remaining { get; set; }
+            public ulong seconds_elapsed { get; set; }
+            public ulong seconds_remaining { get; set; }
             public float percent_done { get; set; }
             public long total_files { get; set; }
             public long files_done { get; set; }

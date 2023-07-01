@@ -57,7 +57,7 @@ namespace resticterm.Views
             Libs.ViewDesign.SetCheck(win, ref _useVSS, "Windows Volume Shadow Copy (Admin mode needed)", Program.dataManager.config.UseVSS, 30, 8);
             Libs.ViewDesign.SetField(win, ref _restorePath, "Restore path", Program.dataManager.config.RestorePath, 30, 10);
             Libs.ViewDesign.SetField(win, ref _keepLast, "Purge, keep last", Program.dataManager.config.KeepLastSnapshots.ToString(), 30, 11);
-            Libs.ViewDesign.SetField(win, ref _sourcePath, "Backup Paths", Program.dataManager.config.SourcesBackupPath, 30, 13, 5);
+            Libs.ViewDesign.SetField(win, ref _sourcePath, "Backup Paths", Program.dataManager.config.SourcesBackupPath, 30, 13, 10);
 
             //_sourcePath.
             _repoPassword.Secret = true;

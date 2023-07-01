@@ -266,7 +266,8 @@ namespace resticterm.Restic
                 ms += String.Join(" / ", status.current_files[0]) + "\n";
             // File count and time
             ms += "Files: " + status.files_done.ToString() + " / " + status.total_files.ToString();
-            ms += "  Time: " + FormatSeconds(status.seconds_elapsed) + " / " + FormatSeconds(status.seconds_remaining);
+            if(status.seconds_elapsed<long.MaxValue && status.seconds_remaining < long.MaxValue )
+                ms += "  Time: " + FormatSeconds((long)status.seconds_elapsed) + " / " + FormatSeconds((long)status.seconds_remaining);
             OnProgress(ms, status.percent_done);
         }
 
