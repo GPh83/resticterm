@@ -240,8 +240,16 @@ namespace resticterm.Restic
             String rep;
             CatConfig ver;
 
-            rep = Run.RemoveESC(_run.Start("cat config"));
-            ver = JsonSerializer.Deserialize<Models.CatConfig>(rep);
+            try
+            {
+                rep = Run.RemoveESC(_run.Start("cat config"));
+                ver = JsonSerializer.Deserialize<Models.CatConfig>(rep);
+
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
 
             return ver.version;
         }
