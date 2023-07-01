@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -91,7 +92,7 @@ namespace resticterm.Restic
                 {
                     p.StandardInput.WriteLine(stdin);
                 }
-                
+
                 var statusTask = p.StandardOutput.ReadToEndAsync();
                 var errorTask = p.StandardError.ReadToEndAsync();
                 p.WaitForExit(TimeOut);
@@ -225,7 +226,20 @@ namespace resticterm.Restic
 
         private String GetRepo()
         {
-            return " -r \"" + _RepoPath + "\"";
+            String ret = " -r \"" + _RepoPath + "\"";
+
+            if (_RepoPath.StartsWith("rclone:"))
+            {
+                if (OperatingSystem.IsWindows())
+                {
+                    ret += " -o rclone.program=\"./rclone.exe\" ";
+                }
+                else
+                {
+                    ret += " -o rclone.program=\"./rclone\" ";
+                }
+            }
+            return ret;
         }
 
     }
