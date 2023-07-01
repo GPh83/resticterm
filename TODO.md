@@ -1,15 +1,16 @@
 
 
 # To do
-
 - Selectable config
 - Replace SaveDialog by Treeview for directories
-- ~~For local repo, show real used space~~
 - Wiki documentation
-- Add repo migration to V2 for using compression
 
 ## Delayed
-- Add information when restoring (restic didn't give information for now)
+- Add information when restoring (restic didn't give information for now, but in progress : https://github.com/restic/restic/issues/3413#event-9556227439) 
+
+## Done
+- ~~For local repo, show real used space~~
+- ~~Add repo migration to V2 for using compression~~
 
 # Ideas 
 - Clipboard use
