@@ -2,7 +2,7 @@
   "profiles": {
     "resticterm": {
       "commandName": "Project",
-      "commandLineArgs": "-h"
+      "commandLineArgs": ""
     }
   }
 }

@@ -13,6 +13,8 @@ namespace resticterm.Models
     {
         internal Config config = new();
 
+        public string ConfigFilename { get; set; } = "recticterm.config.json";
+
 
         /// <summary>
         /// Load files 
@@ -24,12 +26,12 @@ namespace resticterm.Models
 
         internal void LoadConfig()
         {
-            if (!File.Exists("recticterm.config.json") && File.Exists("config.json")) File.Move("config.json", "recticterm.config.json");
+            if (!File.Exists(ConfigFilename) && File.Exists("config.json")) File.Move("config.json", ConfigFilename);
 
-            if (File.Exists("recticterm.config.json"))
+            if (File.Exists(ConfigFilename))
             {
                 String jsonString;
-                jsonString = File.ReadAllText("recticterm.config.json");
+                jsonString = File.ReadAllText(ConfigFilename);
                 config = JsonSerializer.Deserialize<Config>(jsonString, new JsonSerializerOptions { WriteIndented = true });
             }
         }
@@ -37,7 +39,7 @@ namespace resticterm.Models
         internal void SaveConfig()
         {
             String jsonString = JsonSerializer.Serialize<Config>(config, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText("recticterm.config.json", jsonString);
+            File.WriteAllText(ConfigFilename, jsonString);
         }
 
     }

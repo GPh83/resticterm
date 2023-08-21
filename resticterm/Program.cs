@@ -32,6 +32,7 @@ namespace resticterm
 
                 // Retrieve necessary data
                 dataManager = new Models.DataManager();
+                CheckConfigFilename(dataManager, args);
                 dataManager.Start();
 
                 // Initialize repo manager
@@ -66,9 +67,48 @@ namespace resticterm
             Console.WriteLine("resticterm is a multi-platform console UI for restic backup software. (https://restic.net/).");
             Console.WriteLine("It can be used alone as backup tools or with restic command line for manage existing repository.");
             Console.WriteLine("");
-            //Console.WriteLine("config file can be in current directory or in home directory");
-            Console.WriteLine("config file location : " + Path.Combine(Directory.GetCurrentDirectory(), "recticterm.config.json"));
+            Console.WriteLine("Using configuration file in current directory : " + Path.Combine(Directory.GetCurrentDirectory(), "recticterm.config.json"));
+            Console.WriteLine("unless --config is used.");
             Console.WriteLine("");
+            Console.WriteLine("Optionals parameters : ");
+            Console.WriteLine("   --config, -c [filepathname] : Use given configuration file (Use \" for long filename with space)");
+            Console.WriteLine("   --create : create specified config file by --config if doesn't exist");
+            Console.WriteLine("   --help, -h, -v, --version : This help and version");
+            Console.WriteLine("");
+        }
+
+        static void CheckConfigFilename(Models.DataManager dataManager, string[] args)
+        {
+            int pos = Array.IndexOf(args, "--config");
+            if (pos == -1) pos = Array.IndexOf(args, "-c");
+            if (pos >= 0)
+            {
+                if ((args.Length - 1) > pos)
+                {
+                    if (File.Exists(args[pos + 1]))
+                    {
+                        dataManager.ConfigFilename = args[pos + 1];
+                    }
+                    else
+                    {
+                        if (Array.IndexOf(args, "--create") >= 0)
+                        {
+                            dataManager.ConfigFilename = args[pos + 1];
+                        }
+                        else
+                        {
+                            Console.WriteLine("Specified config file \"" + args[pos + 1] + "\" not found !");
+                            Console.WriteLine("You can use --create for create it.");
+                            Environment.Exit(-1);
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Config file must be specified after --config option !");
+                    Environment.Exit(-1);
+                }
+            }
         }
     }
 }

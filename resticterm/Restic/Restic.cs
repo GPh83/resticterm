@@ -52,6 +52,8 @@ namespace resticterm.Restic
 
             ret = "\n";
 
+            ret += ">> Config file : " + Program.dataManager.ConfigFilename + "\n";
+            
             ret += ">> Repository : " + _run._RepoPath + "\n";
 
             ret += "    Version : " + GetVersion().ToString() + "\n";
