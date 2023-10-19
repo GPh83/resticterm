@@ -31,8 +31,11 @@ https://github.com/GPh83/resticterm/wiki
 
 # Usage
 
-Download release, extract and run : resticterm.exe (Windows or Linux)
+Download release, extract and run in terminal : 
+    for Windows : resticterm.exe 
+    for Linux : ./resticterm
 
+Intel/Amd x64 only.
 
 # Contributing
 
@@ -47,9 +50,4 @@ Made with VS2022 Community.
 resticterm Copyright(C) 2021-2023 Philippe GRAILLE.  
 This program comes with ABSOLUTELY NO WARRANTY.  
 This is free software, and you are welcome to redistribute it under certain conditions, see GNU GPL V3 : https://www.gnu.org/licenses/
-
-
-
-
-
 
