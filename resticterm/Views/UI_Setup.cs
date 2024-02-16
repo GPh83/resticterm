@@ -17,6 +17,7 @@ namespace resticterm.Views
         TextField _restorePath;
         TextView _sourcePath;
         TextField _keepLast;
+        TextField _extraParameters;
         CheckBox _useMasterPassword;
         CheckBox _useVSS;
 
@@ -58,6 +59,7 @@ namespace resticterm.Views
             Libs.ViewDesign.SetField(win, ref _restorePath, "Restore path", Program.dataManager.config.RestorePath, 30, 10);
             Libs.ViewDesign.SetField(win, ref _keepLast, "Purge, keep last", Program.dataManager.config.KeepLastSnapshots.ToString(), 30, 11);
             Libs.ViewDesign.SetField(win, ref _sourcePath, "Backup Paths", Program.dataManager.config.SourcesBackupPath, 30, 13, 10);
+            Libs.ViewDesign.SetField(win, ref _extraParameters, "Extra restic parameters", Program.dataManager.config.ExtraResticParameters, 30, 25);
 
             //_sourcePath.
             _repoPassword.Secret = true;
@@ -74,6 +76,7 @@ namespace resticterm.Views
             Program.dataManager.config.RestorePath = _restorePath.Text.ToString();
             Program.dataManager.config.KeepLastSnapshots = int.Parse(_keepLast.Text.ToString());
             Program.dataManager.config.SourcesBackupPath = _sourcePath.Text.ToString();
+            Program.dataManager.config.ExtraResticParameters= _extraParameters.Text.ToString();
             Program.dataManager.SaveConfig();
             Program.restic = new Restic.Restic(Program.dataManager.config.RepoPath, Program.dataManager.config.EncryptedRepoPassword);
             Application.RequestStop();

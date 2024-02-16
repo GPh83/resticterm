@@ -30,7 +30,9 @@ namespace resticterm.Models
 
         [JsonInclude]
         public bool UseVSS { get; set; } = false;
-
+        
+        [JsonInclude]
+        public String ExtraResticParameters { get; set; } = String.Empty;
 
         // --use-fs-snapshot
         internal String MasterPassword { get; set; } = String.Empty;

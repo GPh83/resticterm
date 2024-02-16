@@ -239,6 +239,10 @@ namespace resticterm.Restic
                     ret += " -o rclone.program=\"./rclone\" ";
                 }
             }
+            if (!string.IsNullOrEmpty(Program.dataManager.config.ExtraResticParameters))
+            {
+                ret += " " + Program.dataManager.config.ExtraResticParameters + " ";
+            }
             return ret;
         }
 
