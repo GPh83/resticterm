@@ -75,6 +75,7 @@ namespace resticterm.Views
             Program.dataManager.config.KeepLastSnapshots = int.Parse(_keepLast.Text.ToString());
             Program.dataManager.config.SourcesBackupPath = _sourcePath.Text.ToString();
             Program.dataManager.SaveConfig();
+            Program.restic = new Restic.Restic(Program.dataManager.config.RepoPath, Program.dataManager.config.EncryptedRepoPassword);
             Application.RequestStop();
         }
 
@@ -82,7 +83,7 @@ namespace resticterm.Views
         {
             if (!String.IsNullOrWhiteSpace(Program.dataManager.config.EncryptedRepoPassword) && Program.dataManager.config.GetRepoPassword() == "")
             {
-                if (MessageBox.ErrorQuery("Bad master pas#word", "Bad master password ! \nIf you continue you must redefine repository password in setup.", "Continue", "Quit") != 0)
+                if (MessageBox.ErrorQuery("Bad master password", "Bad master password ! \nIf you continue you must redefine repository password in setup.", "Continue", "Quit") != 0)
                     Environment.Exit(-1);
             }
             Application.RequestStop();

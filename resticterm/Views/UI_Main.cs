@@ -73,7 +73,6 @@ namespace resticterm.Views
             {
                 var setup = new Views.UI_Setup();
                 setup.ShowModal(message);
-                Program.restic = new Restic.Restic(Program.dataManager.config.RepoPath, Program.dataManager.config.EncryptedRepoPassword);
                 DisplayRepoSummary();
             }
         }
@@ -135,14 +134,10 @@ namespace resticterm.Views
         void DisplayRepoSummary()
         {
             var chk = Program.dataManager.config.CheckValidity();
-            if (chk != "")
+            if (!string.IsNullOrEmpty(chk))
             {
                 info.Text = "Bad setup !\n\n" + chk;
                 ShowSetup(chk);
-                //if (Program.dataManager.config.CheckValidity() != "")
-                //{
-                //    info.Text = "Bad setup !\n\n" + chk;
-                //}
             }
             else
             {
@@ -151,7 +146,7 @@ namespace resticterm.Views
                 
                 var str = Program.restic.Summary();
                 str += "\n";
-                str += "resticterm Copyright(C) 2021-2023 Philippe GRAILLE. This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions, see GNU GPL V3 : https://www.gnu.org/licenses/\n";
+                str += "resticterm Copyright(C) 2021-2024 Philippe GRAILLE. This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions, see GNU GPL V3 : https://www.gnu.org/licenses/\n";
                 str += "GitHub : https://github.com/GPh83/resticterm/\n";
                 info.Text = str.Replace("\r", "");
                 Application.Refresh();
