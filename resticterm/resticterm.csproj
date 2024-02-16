@@ -15,7 +15,7 @@
     <PackageTags>restic ui backup</PackageTags>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <RepositoryUrl>https://github.com/GPh83/resticterm</RepositoryUrl>
-    <Copyright>(C)2021-2023 Philippe GRAILLE</Copyright>
+    <Copyright>(C)2021-2024 Philippe GRAILLE</Copyright>
     <PackageReleaseNotes></PackageReleaseNotes>
     <SignAssembly>false</SignAssembly>
     <NoWin32Manifest>true</NoWin32Manifest>
