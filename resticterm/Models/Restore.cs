@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace resticterm.Models
 {
-    class Restore
+    public class Restore
     {
         // Common 
         public string message_type { get; set; }
-        public int total_files { get; set; }
-        public int total_bytes { get; set; }
+        public ulong total_files { get; set; }
+        public ulong total_bytes { get; set; }
         
         // Only "message_type":"status"
-        public int percent_done { get; set; }
+        public float percent_done { get; set; }
 
         // Only "message_type":"summary"
-        public int files_restored { get; set; }
-        public int bytes_restored { get; set; }
+        public ulong files_restored { get; set; }
+        public ulong bytes_restored { get; set; }
     }
 
 }

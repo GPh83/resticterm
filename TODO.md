@@ -1,12 +1,9 @@
 
 
 # To do
-- Selectable config
+- Selectable config (Exist on command line)
 - Replace SaveDialog by Treeview for directories
 - Wiki documentation
-
-## Delayed
-- Add information when restoring (restic didn't give information for now, but in progress : https://github.com/restic/restic/issues/3413#event-9556227439) 
 
 ## Done
 - ~~For local repo, show real used space~~
@@ -14,7 +11,8 @@
 - ~~Command line options : for config location, for help~~
 - ~~Add cache for summary when no action made in submenu~~
 - ~~Adding extra parameters in setup form for pass to restic~~
-- 
+- ~~Add information when restoring (restic didn't give information for now, but in progress : https://github.com/restic/restic/issues/3413#event-9556227439)~~
+ 
 # Ideas 
 - Clipboard use
 - Cached summary

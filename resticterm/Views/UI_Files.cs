@@ -89,8 +89,13 @@ namespace resticterm.Views
             Application.Run(openDialog);
             if (!openDialog.Canceled)
             {
-                var ret = Program.restic.Restore(currentSnapshotId, openDialog.FilePaths[0].ToString(), filenameToRestore);
-                MessageBox.Query("File(s) save", ret, "Ok");
+                //var ret = Program.restic.Restore(currentSnapshotId, openDialog.FilePaths[0].ToString(), filenameToRestore);
+                //MessageBox.Query("File(s) restored", ret, "Ok");
+                if (Application.Top.IsCurrentTop)
+                {
+                    var rest = new Views.UI_Restore();
+                    rest.ShowModal(currentSnapshotId, openDialog.FilePaths[0].ToString(), filenameToRestore);
+                }
             }
         }
 

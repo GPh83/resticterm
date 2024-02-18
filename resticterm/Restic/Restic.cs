@@ -2,6 +2,7 @@
 using resticterm.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -31,7 +32,7 @@ namespace resticterm.Restic
         /// Report the current state of backup
         /// </summary>
         /// <param name="message">Action or message</param>
-        /// <param name="percent">0 to 1 = Progress bar ans current action. -1 = information message</param>
+        /// <param name="percent">0 to 1 = Progress bar and current action. -1 = information message</param>
         protected void OnProgress(String message, float percent)
         {
             if (Progress != null) Progress(message, percent);
@@ -44,7 +45,7 @@ namespace resticterm.Restic
             _run = new Run(repoPath, encryptedPassword);
         }
 
-        
+
         public void ForceRefreshSummaryCache()
         {
             _CacheRefreshNeeded = true;
@@ -181,21 +182,26 @@ namespace resticterm.Restic
             return files;
         }
 
-        public String Restore(String snapshotID, String filepath, String filenameToRestore)
+        public void Restore(String snapshotID, String filepath, String filenameToRestore)
         {
-            var command = "restore ";
-            command += " --target \"" + filepath + "\"";
-            command += " --include \"" + filenameToRestore + "\"";
-            command += " -v";
-            command += " " + snapshotID;
+            _run.RestoreStatus += RestoreStatus;
 
-            //var command = "dump " + currentSnapshotId;
-            //command += " \"" +filenameToRestore+ "\"";
-            //command += " --archive \"zip\"";
-            ////command += " > " + Path.Combine(saveDialog.FilePath.ToString(), saveDialog.FileName.ToString());
+            OnProgress("\nStart", -1);
+            OnProgress("Started", 0);
 
-            // TODO : Event for each line 
-            return Program.restic._run.Start(command);
+
+            var summary = _run.StartRestore(snapshotID, filepath, filenameToRestore);
+            OnProgress("Done", 100);
+            OnProgress("End\n", -1);
+            if (summary.message_type == "error")
+            {
+                OnProgress("Error !" , -1);
+            }
+            else
+            {
+                OnProgress("Files restored : " + summary.files_restored.ToString(), -1);
+            }
+            _run.RestoreStatus -= RestoreStatus;
         }
 
         public String Remove(String snapshotID)
@@ -229,7 +235,7 @@ namespace resticterm.Restic
 
             var uncryptedPassword = Program.dataManager.config.GetRepoPassword();
             rep = Run.RemoveESC(_run.Start("init", -1, uncryptedPassword + "\n" + uncryptedPassword));
-            _CacheRefreshNeeded = true; 
+            _CacheRefreshNeeded = true;
             return rep.Replace("\r", "");
         }
 
@@ -238,7 +244,7 @@ namespace resticterm.Restic
             String rep;
             //forget--keep - last 1--prune
             rep = Run.RemoveESC(_run.Start("forget --keep-last " + Program.dataManager.config.KeepLastSnapshots.ToString() + " --prune"));
-            _CacheRefreshNeeded = true; 
+            _CacheRefreshNeeded = true;
             return rep.Replace("\r", "");
         }
 
@@ -247,7 +253,7 @@ namespace resticterm.Restic
             String rep;
             //forget--keep - last 1--prune
             rep = "\n" + Run.RemoveESC(_run.Start("prune"));
-            _CacheRefreshNeeded = true; 
+            _CacheRefreshNeeded = true;
             return rep.Replace("\r", "");
         }
 
@@ -257,7 +263,7 @@ namespace resticterm.Restic
             var uncryptedPassword = Program.dataManager.config.GetRepoPassword();
 
             rep = "\n" + Run.RemoveESC(_run.Start("migrate upgrade_repo_v2", -1, uncryptedPassword + "\n" + uncryptedPassword));
-            _CacheRefreshNeeded = true; 
+            _CacheRefreshNeeded = true;
             return rep.Replace("\r", "");
         }
 
@@ -295,6 +301,16 @@ namespace resticterm.Restic
             ms += "Files: " + status.files_done.ToString() + " / " + status.total_files.ToString();
             if (status.seconds_elapsed < long.MaxValue && status.seconds_remaining < long.MaxValue)
                 ms += "  Time: " + FormatSeconds((long)status.seconds_elapsed) + " / " + FormatSeconds((long)status.seconds_remaining);
+            OnProgress(ms, status.percent_done);
+        }
+
+
+        private void RestoreStatus(Models.Restore status)
+        {
+            String ms = String.Empty;
+
+            // File count 
+            ms += "Files: " + status.files_restored.ToString() + " / " + status.total_files.ToString();
             OnProgress(ms, status.percent_done);
         }
 
