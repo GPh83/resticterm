@@ -98,7 +98,7 @@ namespace resticterm.Libs
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return String.Empty;
                 }
