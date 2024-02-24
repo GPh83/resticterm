@@ -74,8 +74,7 @@ namespace resticterm.Libs
             byte[] saltBytes = Encoding.ASCII.GetBytes(_salt);
             byte[] valueBytes = Convert.FromBase64String(value);
 
-            byte[] decrypted;
-            int decryptedByteCount = 0;
+            string ret = "";
 
             using (T cipher = new T())
             {
@@ -92,8 +91,12 @@ namespace resticterm.Libs
                         {
                             using (CryptoStream reader = new CryptoStream(from, decryptor, CryptoStreamMode.Read))
                             {
-                                decrypted = new byte[valueBytes.Length];
-                                decryptedByteCount = reader.Read(decrypted, 0, decrypted.Length);
+                                using (StreamReader srDecrypt = new StreamReader(reader))
+                                {
+                                    // Read the decrypted bytes from the decrypting stream
+                                    // and place them in a string.
+                                    ret = srDecrypt.ReadToEnd();
+                                }
                             }
                         }
                     }
@@ -105,7 +108,7 @@ namespace resticterm.Libs
 
                 cipher.Clear();
             }
-            return Encoding.UTF8.GetString(decrypted, 0, decryptedByteCount);
+            return ret;
         }
 
     }
