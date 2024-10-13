@@ -89,7 +89,10 @@ namespace resticterm.Restic
             }
             else
             {
-                psi.EnvironmentVariables.Add("RESTIC_PASSWORD", Libs.Cryptography.Decrypt(_EncryptedPassword, Program.dataManager.config.MasterPassword));
+                if(!psi.EnvironmentVariables.ContainsKey("RESTIC_PASSWORD"))
+                {
+                    psi.EnvironmentVariables.Add("RESTIC_PASSWORD", Libs.Cryptography.Decrypt(_EncryptedPassword, Program.dataManager.config.MasterPassword));
+                }
                 //psi.EnvironmentVariables.Add("RESTIC_REPOSITORY", "\"" + _RepoPath + "\"");
                 psi.Arguments = command + GetRepo();
 
