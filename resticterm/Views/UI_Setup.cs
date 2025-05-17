@@ -28,6 +28,8 @@ namespace resticterm.Views
             var statusBar = new StatusBar(new StatusItem[] {
                 new StatusItem(Key.F1, "~F1~ Save", SaveSetup),
                 new StatusItem(Key.Esc, "~Esc~ Return", () => { Quit(); })
+                /*,
+                new StatusItem(Key.F9, "~F9~ Paste", () => { Paste(); })*/
             });
             ntop.Add(statusBar);
             ntop.StatusBar = statusBar;
@@ -95,8 +97,8 @@ namespace resticterm.Views
 
         void Paste()
         {
-            //_restorePath.Text = Clipboard.Contents.
-            //Debug.WriteLine(Clipboard.Contents.ToString());
+            string clip;
+            if (Clipboard.TryGetClipboardData(out clip)) Debug.WriteLine(clip);
         }
     }
 }

@@ -12,12 +12,11 @@
 - ~~Add cache for summary when no action made in submenu~~
 - ~~Adding extra parameters in setup form for pass to restic~~
 - ~~Add information when restoring (restic didn't give information for now, but in progress : https://github.com/restic/restic/issues/3413#event-9556227439)~~
+- ~~Cached summary~~
  
 # Ideas 
 - Clipboard use
-- Cached summary
 - Export database and save it in repository (mssql, mysql)
 - Create planned backup 
     - cron on linux
     - Task scheduler on Windows
-

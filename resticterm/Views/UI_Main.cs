@@ -1,13 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Terminal.Gui;
+﻿using resticterm.Models;
 using resticterm.Restic;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Reflection;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Terminal.Gui;
 
 namespace resticterm.Views
 {
@@ -145,6 +148,8 @@ namespace resticterm.Views
                 Libs.ViewDesign.RefreshView(Application.Top, info);
 
                 var str = Program.restic.Summary();
+                str += "\n";
+                str+= "resticterm latest release : " + GitHubRelease.GetRestictermRelease();
                 str += "\n";
                 str += "resticterm Copyright(C) 2021-2025 Philippe GRAILLE. This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions, see GNU GPL V3 : https://www.gnu.org/licenses/\n";
                 str += "GitHub : https://github.com/GPh83/resticterm/\n";
