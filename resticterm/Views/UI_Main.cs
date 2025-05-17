@@ -1,15 +1,6 @@
 ﻿using resticterm.Models;
-using resticterm.Restic;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
 using System.Reflection;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 using Terminal.Gui;
 
 namespace resticterm.Views
