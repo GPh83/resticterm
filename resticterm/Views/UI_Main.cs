@@ -46,9 +46,9 @@ namespace resticterm.Views
             win.Add(info);
 
             statusBar = new StatusBar(new StatusItem[] {
-                new StatusItem(Key.F1, "~F1~ Backup", ShowBackup),
-                new StatusItem(Key.F2, "~F2~ Browse/Restore", ShowBrowser),
-                new StatusItem(Key.F3, "~F3~ Init/Tools", ShowTools),
+                new StatusItem(Key.F1, "~F1~ Backup", () => { ShowBackup(); }),
+                new StatusItem(Key.F2, "~F2~ Browse/Restore", () => {ShowBrowser(); }),
+                new StatusItem(Key.F3, "~F3~ Init/Tools", () => {ShowTools(); }),
                 new StatusItem(Key.F8, "~F8~ Setup", () => { ShowSetup(); }),
                 new StatusItem(Key.F10, "~F10~ Quit", () => { Application.RequestStop(); })
             });
@@ -142,11 +142,11 @@ namespace resticterm.Views
             else
             {
                 info.Text = "Summary in progress ...";
-                Libs.ViewDesign.RefreshView(Application.Top,info);
-                
+                Libs.ViewDesign.RefreshView(Application.Top, info);
+
                 var str = Program.restic.Summary();
                 str += "\n";
-                str += "resticterm Copyright(C) 2021-2024 Philippe GRAILLE. This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions, see GNU GPL V3 : https://www.gnu.org/licenses/\n";
+                str += "resticterm Copyright(C) 2021-2025 Philippe GRAILLE. This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions, see GNU GPL V3 : https://www.gnu.org/licenses/\n";
                 str += "GitHub : https://github.com/GPh83/resticterm/\n";
                 info.Text = str.Replace("\r", "");
                 Application.Refresh();

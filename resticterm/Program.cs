@@ -28,12 +28,12 @@ namespace resticterm
             }
             else
             {
-                Application.Init();
-
                 // Retrieve necessary data
                 dataManager = new Models.DataManager();
                 CheckConfigFilename(dataManager, args);
                 dataManager.Start();
+
+                Application.Init();
 
                 // Initialize repo manager
                 restic = new Restic.Restic(dataManager.config.RepoPath, dataManager.config.EncryptedRepoPassword);
@@ -44,7 +44,14 @@ namespace resticterm
                 // Start UI
                 var main = new Views.UI_Main();
                 main.Create();
-                Application.Run();
+                try
+                {
+                    Application.Run();
+                }
+                finally
+                {
+                    Application.Shutdown();
+                }
             }
         }
 

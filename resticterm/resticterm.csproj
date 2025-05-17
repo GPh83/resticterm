@@ -19,9 +19,9 @@
     <PackageReleaseNotes></PackageReleaseNotes>
     <SignAssembly>false</SignAssembly>
     <NoWin32Manifest>true</NoWin32Manifest>
-    <AssemblyVersion>0.11.0.0</AssemblyVersion>
+    <AssemblyVersion>0.11.0.1</AssemblyVersion>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <FileVersion>0.11.0.0</FileVersion>
+    <FileVersion>0.11.0.1</FileVersion>
     <PlatformTarget>x64</PlatformTarget>
 
     <!-- <PublishSingleFile>true</PublishSingleFile>
