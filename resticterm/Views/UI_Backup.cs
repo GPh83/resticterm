@@ -9,7 +9,7 @@ namespace resticterm.Views
 {
     class UI_Backup
     {
-        Label info;
+        TextView info;
         Label current;
         ProgressBar pBar;
 
@@ -51,13 +51,15 @@ namespace resticterm.Views
             header.Text = msg.Replace("\r", "");
             win.Add(header);
 
-            // Information
-            info = new Label()
+            // Information (use TextView so it can scroll)
+            info = new TextView()
             {
                 X = 0,
                 Y = Pos.Bottom(header),
                 Width = Dim.Fill(),
-                Height = Dim.Fill() - 4
+                Height = Dim.Fill() - 4,
+                ReadOnly = true,
+                WordWrap = true
             };
             info.Text = "";
             win.Add(info);
@@ -109,6 +111,8 @@ namespace resticterm.Views
             {
                 message = info.Text.ToString() + message + "\n";
                 info.Text = message.Replace("\r", "");
+                // Move cursor to end so the view autoscrolls to show latest text
+                try { info.MoveEnd(); } catch { }
             }
             Application.Refresh();
         }
